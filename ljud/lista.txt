@@ -1,0 +1,27 @@
+MUSIK:
+bana1
+bana2
+
+
+
+
+SPELARE:
+KRAV:
+hopp - FIXED
+skjuta pistol - FIXED
+ta skada - FIXED 
+game over - FIXED
+
+OM TID FINNS:
+drar i spak - 
+
+
+
+
+ENEMY:
+KRAV:
+död - FIXED
+
+OM TID FINNS:
+tar skada - FIXED
+skjuter - 

@@ -1,0 +1,254 @@
+0 675 30 450 bild/longpavement.jpg object 0 0 ;
+450 675 30 450 bild/longpavement.jpg object 0 0  ;
+920 500 30 210 bild/mediumpavement.jpg object 0 0  ;
+1130 500 30 30 bild/mediumpavement.jpg object 0 0  ;
+1160 500 30 30 bild/mediumpavement.jpg object 0 0  ;
+1190 500 30 30 bild/mediumpavement.jpg object 0 0  ;
+1220 500 30 30 bild/mediumpavement.jpg object 0 0  ;
+
+1400 675 30 450 bild/longpavement.jpg object 0 0  ;
+1830 500 30 210 bild/mediumpavement.jpg object 0 0  ;
+
+1700 675 30 450 bild/longpavement.jpg object 0 0  ;
+2150 675 30 450 bild/longpavement.jpg object 0 0  ;
+2600 500 30 210 bild/mediumpavement.jpg object 0 0  ;
+2810 500 30 30 bild/pavement.jpg object 0 0  ;
+2840 500 30 30 bild/pavement.jpg object 0 0  ;
+2870 500 30 30 bild/pavement.jpg object 0 0  ;
+2900 500 30 30 bild/pavement.jpg object 0 0  ;
+2930 500 30 30 bild/pavement.jpg object 0 0  ;
+
+3200 675 30 450 bild/longpavement.jpg object 0 0 ;
+
+3900 -1100 30 450 bild/longpavement.jpg object 0 0  ;
+4510 -1250 30 30 bild/pavement.jpg object 0 0  ;
+4540 -1250 30 30 bild/pavement.jpg object 0 0  ;
+4570 -1250 30 30 bild/pavement.jpg object 0 0  ;
+
+4610 -1400 30 30 bild/pavement.jpg object 0 0  ;
+4640 -1400 30 30 bild/pavement.jpg object 0 0  ;
+4670 -1400 30 30 bild/pavement.jpg object 0 0  ;
+
+4710 -1500 30 450 bild/longpavement.jpg object 0 0  ;
+
+5160 -900 30 450 bild/longpavement.jpg object 0 0  ;
+
+5400 -1800 60 36 bild/pil_ned.png object 0 0  ;
+
+6190 -900 30 30 bild/pavement.jpg object 0 0  ;
+6210 -900 30 30 bild/pavement.jpg object 0 0  ;
+6240 -900 30 30 bild/pavement.jpg object 0 0  ;
+6270 -900 30 30 bild/pavement.jpg object 0 0  ;
+6300 -900 30 210 bild/mediumpavement.jpg object 0 0  ;
+6700 -750 30 210 bild/mediumpavement.jpg object 0 0  ;
+6300 -600 30 210 bild/mediumpavement.jpg object 0 0  ;
+6700 -450 30 210 bild/mediumpavement.jpg object 0 0  ;
+6300 -300 30 210 bild/mediumpavement.jpg object 0 0  ;
+6910 -1900 450 30 bild/longwall.jpg object 0 0  ;
+6910 -1450 450 30 bild/longwall.jpg object 0 0  ;
+6910 -1000 450 30 bild/longwall.jpg object 0 0  ;
+6910 -550 210 30 bild/mediumwall.jpg object 0 0  ;
+6940 -1900 450 30 bild/longwall.jpg object 0 0  ;
+6940 -1450 450 30 bild/longwall.jpg object 0 0  ;
+6940 -1000 450 30 bild/longwall.jpg object 0 0  ;
+6940 -550 210 30 bild/mediumwall.jpg object 0 0  ;
+6970 -1900 450 30 bild/longwall.jpg object 0 0  ;
+6970 -1450 450 30 bild/longwall.jpg object 0 0  ;
+6970 -1000 450 30 bild/longwall.jpg object 0 0  ;
+6970 -550 210 30 bild/mediumwall.jpg object 0 0  ;
+
+
+6300 -200 30 450 bild/longpavement.jpg object 0 0  ;
+6750 -200 30 450 bild/longpavement.jpg object 0 0  ;
+7200 -200 30 450 bild/longpavement.jpg object 0 0  ;
+7650 -200 30 450 bild/longpavement.jpg object 0 0  ;
+8100 -200 30 30 bild/pavement.jpg object 0 0  ;
+8130 -200 30 30 bild/pavement.jpg object 0 0  ;
+
+7950 -250 30 210 bild/mediumpavement.jpg object 0 0  ;
+7600 -400 30 210 bild/mediumpavement.jpg object 0 0  ;
+7950 -550 30 210 bild/mediumpavement.jpg object 0 0  ;
+7600 -700 30 210 bild/mediumpavement.jpg object 0 0  ;
+7950 -850 30 210 bild/mediumpavement.jpg object 0 0  ;
+8160 -1270 450 30 bild/longwall.jpg object 0 0  ;
+8160 -820 450 30 bild/longwall.jpg object 0 0  ;
+8160 -370 210 30 bild/mediumwall.jpg object 0 0  ;
+
+7360 -1000 30 450 bild/longpavement.jpg object 0 0  ;
+
+7000 -1150 30 210 bild/mediumpavement.jpg object 0 0  ;
+7360 -1300 30 450 bild/longpavement.jpg object 0 0  ;
+7810 -1300 30 450 bild/longpavement.jpg object 0 0  ;
+
+8450 -1300 30 450 bild/longpavement.jpg object 0 0  ;
+
+9100 -1300 30 450 bild/longpavement.jpg object 0 0  ;
+
+9750 -1150 30 210 bild/mediumpavement.jpg object 0 0 ;
+9350 -1000 30 210 bild/mediumpavement.jpg object 0 0  ;
+9750 -850 30 210 bild/mediumpavement.jpg object 0 0  ;
+9350 -700 30 210 bild/mediumpavement.jpg object 0 0  ;
+9960 -2000 450 30 bild/longwall.jpg object 0 0  ;
+9960 -1550 450 30 bild/longwall.jpg object 0 0  ;
+9960 -1100 210 30 bild/mediumwall.jpg object 0 0  ;
+9960 -890 30 30 bild/pavement.jpg object 0 0  ;
+9960 -860 30 30 bild/pavement.jpg object 0 0  ;
+9960 -830 30 30 bild/pavement.jpg object 0 0  ;
+
+9560 -700 30 30 bild/pavement.jpg object 0 0  ;
+9590 -700 30 30 bild/pavement.jpg object 0 0  ;
+9620 -700 30 30 bild/pavement.jpg object 0 0  ;
+9650 -700 30 450 bild/longpavement.jpg object  0 0  ;
+10100 -700 30 450 bild/longpavement.jpg object 0 0  ;
+
+10700 -700 30 450 bild/longpavement.jpg object 0 0  ;
+
+11000 -1050 80 256 bild/wait.png object 0 0 ;
+12100 -600 30 30 bild/pavement.jpg object 0 0  ;
+12130 -600 30 30 bild/pavement.jpg object 0 0  ;
+12160 -600 30 30 bild/pavement.jpg object 0 0  ;
+12190 -600 30 30 bild/pavement.jpg object 0 0  ;
+12220 -600 30 30 bild/pavement.jpg object 0 0  ;
+
+
+13900 -450 30 210 bild/mediumpavement.jpg object 0 0  ;
+14110 -420 30 30 bild/pavement.jpg object 0 0  ;
+14140 -390 30 30 bild/pavement.jpg object 0 0  ;
+14170 -360 30 30 bild/pavement.jpg object 0 0  ;
+14200 -330 30 30 bild/pavement.jpg object 0 0  ;
+14230 -300 30 30 bild/pavement.jpg object 0 0  ;
+14260 -270 30 30 bild/pavement.jpg object 0 0  ;
+14290 -240 30 30 bild/pavement.jpg object 0 0  ;
+14310 -210 30 30 bild/pavement.jpg object 0 0  ;
+14340 -210 30 210 bild/mediumpavement.jpg object 0 0  ;
+
+14700 -150 30 210 bild/mediumpavement.jpg object 0 0  ;
+15100 0 30 210 bild/mediumpavement.jpg object 0 0  ;
+14700 150 30 210 bild/mediumpavement.jpg object 0 0  ;
+15100 300 30 210 bild/mediumpavement.jpg object 0 0  ;
+14700 450 30 210 bild/mediumpavement.jpg object 0 0  ;
+15310 -1110 450 30 bild/longwall.jpg object 0 0 ;
+15310 -660 450 30 bild/longwall.jpg object 0 0  ;
+15310 -210 210 30 bild/mediumwall.jpg object 0 0  ;
+15310 0 210 30 bild/mediumwall.jpg object 0 0  ;
+15310 210 210 30 bild/mediumwall.jpg object 0 0  ;
+
+15100 600 30 450 bild/longpavement.jpg object 0 0  ;
+15550 600 30 450 bild/longpavement.jpg object 0 0  ;
+15960 600 30 450 bild/longpavement.jpg object 0 0  ;
+16410 600 30 450 bild/longpavement.jpg object 0 0  ;
+16860 600 30 450 bild/longpavement.jpg object 0 0  ;
+17310 600 30 30 bild/pavement.jpg object 0 0  ;
+
+17310 150 450 30 bild/longwall.jpg object 0 0  ;
+17310 -300 450 30 bild/longwall.jpg object 0 0  ;
+17310 -750 450 30 bild/longwall.jpg object 0 0  ;
+17310 -1200 450 30 bild/longwall.jpg object 0 0  ;
+
+
+17340 600 30 450 bild/longpavement.jpg object 0 0  ;
+17790 600 30 450 bild/longpavement.jpg object 0 0  ;
+18240 600 30 450 bild/longpavement.jpg object 0 0  ;
+18690 600 30 450 bild/longpavement.jpg object 0 0  ;
+19140 600 30 450 bild/longpavement.jpg object 0 0  ;
+17890 425 30 210 bild/mediumpavement.jpg object 0 0  ;
+18190 325 30 210 bild/mediumpavement.jpg object 0 0  ;
+18490 225 30 210 bild/mediumpavement.jpg object 0 0  ;
+18790 325 30 210 bild/mediumpavement.jpg object 0 0  ;
+19090 425 30 210 bild/mediumpavement.jpg object 0 0  ;
+
+19560 150 450 30 bild/longwall.jpg object 0 0  ;
+19560 -300 450 30 bild/longwall.jpg object 0 0  ;
+19560 -750 450 30 bild/longwall.jpg object 0 0  ;
+
+1400 645 30 30 bild/Blocks/block.jpg object 0 0  ;
+2570 645 30 30 bild/Blocks/block.jpg object 0 0  ;
+
+3800 500 30 30 bild/Blocks/redblock.png object 0 0 ;
+3830 500 30 30 bild/Blocks/redblock.png object 0 0 ;
+3860 500 30 30 bild/Blocks/redblock.png object 0 0 ;
+3890 500 30 30 bild/Blocks/redblock.png object 0 0 ;
+
+3600 100 30 30 bild/Blocks/redblock.png object 0 0 ;
+3630 100 30 30 bild/Blocks/redblock.png object 0 0 ;
+3660 100 30 30 bild/Blocks/redblock.png object 0 0 ;
+3690 100 30 30 bild/Blocks/redblock.png object 0 0 ;
+
+3900 -300 30 30 bild/Blocks/redblock.png object 0 0 ;
+3930 -300 30 30 bild/Blocks/redblock.png object 0 0 ;
+3960 -300 30 30 bild/Blocks/redblock.png object 0 0 ;
+3990 -300 30 30 bild/Blocks/redblock.png object 0 0 ;
+
+3600 -700 30 30 bild/Blocks/redblock.png object 0 0 ;
+3630 -700 30 30 bild/Blocks/redblock.png object 0 0 ;
+3660 -700 30 30 bild/Blocks/redblock.png object 0 0 ;
+3690 -700 30 30 bild/Blocks/redblock.png object 0 0 ;
+
+5770 -900 30 30 bild/Blocks/redblock.png object 0 0  ;
+5800 -900 30 30 bild/Blocks/redblock.png object 0 0  ;
+5830 -900 30 30 bild/Blocks/redblock.png object 0 0  ;
+5860 -900 30 30 bild/Blocks/redblock.png object 0 0  ;
+
+
+1928 400 24 28 bild/enemytower.png tower 2 1 200 300 5 0 0 ;
+7450 -400 24 28 bild/enemytower.png tower 2 1 -800 300 5 0 0 ;
+7550 -400 24 28 bild/enemytower.png tower 3 1 -950 300 5 0 0 ;
+15000 200 24 28 bild/enemytower.png tower 2 1 -140 200 5 0 0 ;
+18300 480 24 28 bild/enemytower.png tower 2 1 0 250 5 0 0 ;
+18620 480 24 28 bild/enemytower.png tower 2 1 0 250 5 0 0 ;
+2000 605 35 70 bild/enemycreeper.png creeper 3 2 200 0 0 ;
+4200 -1171 35 70 bild/enemycreeper.png creeper 3 2 100 0 0 ;
+7200  -270 35 70 bild/enemycreeper.png creeper 2 2 300 0 0 ;
+8100 -1370 35 70 bild/enemycreeper.png creeper 3 2 300 0 0 ;
+16340 530 35 70 bild/enemycreeper.png creeper 2 2 350 0 0 ;
+3200 632 22 36 bild/enemysimple.png simple 1 1 3650 3 1 632 ;
+6700 -786 22 36 bild/enemysimple.png simple 1 1 6900 3 1 -786 ;
+6600 -236 22 36 bild/enemysimple.png simple 1 1 6850 3 1 -236 ;
+9100 -1336 22 36 bild/enemysimple.png simple 1 1 9550 3 1 -1336 ;
+10700 -736 22 36 bild/enemysimple.png simple 1 1 11150 3 1 -736 ;
+16100 564 22 36 bild/enemysimple.png simple 1 1 16600 3 1 564 ;
+
+
+11250 -600 210 30 bild/mediumpavement.jpg moving 2 11850 ;
+12300 -600 210 30 bild/mediumpavement.jpg moving 2 13500 ;
+
+16600 450 210 30 bild/mediumpavement.jpg moving 1 17100 ;
+16600 300 210 30 bild/mediumpavement.jpg moving 2 17100 ;
+16600 150 210 30 bild/mediumpavement.jpg moving 1 17100 ;
+16600   0 210 30 bild/mediumpavement.jpg moving 3 17100 ;
+16600 -150 210 30 bild/mediumpavement.jpg moving 2 17100 ;
+16600 -300 210 30 bild/mediumpavement.jpg moving 3 17100 ;
+16600 -450 210 30 bild/mediumpavement.jpg moving 1 17100 ;
+16600 -600 210 30 bild/mediumpavement.jpg moving 3 17100 ;
+16600 -750 210 30 bild/mediumpavement.jpg moving 2 17100 ;
+16600 -900 210 30 bild/mediumpavement.jpg moving 3 17100 ;
+16600 -1050 210 30 bild/mediumpavement.jpg moving 1 17100 ;
+16600 -1200 210 30 bild/mediumpavement.jpg moving 2 17100 ;
+
+
+2800 370 30 30 bild/healthcrate.png moving 0 3450 ;
+3450 -1100 30 30 bild/healthcrate.png moving 0 3450 ;
+5310 -930 30 30 bild/healthcrate.png moving 0 3450 ;
+12130 -630 30 30 bild/healthcrate.png moving 0 3450 ;
+16960 570 30 30 bild/healthcrate.png moving 0 3450 ;
+
+17960 420 30 30 bild/healthcrate.png moving 0 3450 ;
+18260 320 30 30 bild/healthcrate.png moving 0 3450 ;
+18560 220 30 30 bild/healthcrate.png moving 0 3450 ;
+18860 320 30 30 bild/healthcrate.png moving 0 3450 ;
+19160 420 30 30 bild/healthcrate.png moving 0 3450 ;
+
+1070 470 30 30 bild/weaponcrate.png moving 0 3450 ;
+1100 470 30 30 bild/weaponcrate.png moving 0 3450 ;
+5845 -1200 30 30 bild/weaponcrate.png moving 0 3450 ;
+12160 -630 30 30 bild/weaponcrate.png moving 0 3450 ;
+1925 470 30 30 bild/weaponcrate.png moving 0 1100 ;
+
+17990 420 30 30 bild/weaponcrate.png moving 0 3450 ;
+18290 320 30 30 bild/weaponcrate.png moving 0 3450 ;
+18590 220 30 30 bild/weaponcrate.png moving 0 3450 ;
+18890 320 30 30 bild/weaponcrate.png moving 0 3450 ;
+19190 420 30 30 bild/weaponcrate.png moving 0 3450 ;
+
+
+0 0 0 0 bild/background3.jpg background ;
