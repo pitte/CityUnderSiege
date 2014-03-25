@@ -1,4 +1,7 @@
-void Load_Sound(std::string level, Mix_Music*& music, Mix_Chunk*& Player_Shoot, Mix_Chunk*& Player_Jump, Mix_Chunk*& Player_Hurt, Mix_Chunk*& Player_Jumps_Enemy, Mix_Chunk*& Enemy_Dies, Mix_Chunk*& Game_Over)
+void Load_Sound(std::string level, Mix_Music*& music, Mix_Chunk*& Player_Shoot, 
+		Mix_Chunk*& Player_Jump, Mix_Chunk*& Player_Hurt, 
+		Mix_Chunk*& Player_Jumps_Enemy, Mix_Chunk*& Enemy_Dies, 
+		Mix_Chunk*& Game_Over)
 {
   if(level == "City_Level.txt")
     music = Mix_LoadMUS("ljud/Music_City_Level.mp3");

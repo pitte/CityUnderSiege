@@ -4,6 +4,11 @@
 #include <string>
 #include <vector>
 
+/*
+This object moves and needs to check collision with the world. 
+It also has hitpoints and other variables handling movement.
+ */
+
 class MovingObject : public Object
 {
  public:

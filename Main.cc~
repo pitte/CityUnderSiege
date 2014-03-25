@@ -31,6 +31,7 @@ const int FRAMES_PER_SECOND = 45;
 
 SDL_Surface *screen = NULL;
 SDL_Event event;
+
 Mix_Music* music = NULL;
 Mix_Chunk* Player_Shoot = NULL;
 Mix_Chunk* Player_Jump = NULL;
@@ -39,38 +40,45 @@ Mix_Chunk* Player_Jumps_Enemy = NULL;
 Mix_Chunk* Enemy_Dies = NULL;
 Mix_Chunk* Game_Over = NULL;
 
-void handle_background( int x, int y, SDL_Surface* source, SDL_Surface* destination, float cameraY )
+
+void handle_background( int x, int y, SDL_Surface* source, SDL_Surface* destination, float cameraY)
 {
   SDL_Rect offset;
-  //Current background.
+  //nuvarande bakgrund
   offset.x = x;
   offset.y = y + int(cameraY + 0.5 - 143);
   SDL_BlitSurface( source, NULL, destination, &offset );
-  //Next background.
+  //nästkommande bakgrund
   offset.x = x + source->w;
   offset.y = y + int(cameraY + 0.5 - 143);
   SDL_BlitSurface( source, NULL, destination, &offset );
-  //Previous background.
+  //föregående bakgrund
   offset.x = x - source->w;
   offset.y = y + int(cameraY + 0.5 - 143);
   SDL_BlitSurface( source, NULL, destination, &offset );
-  //Next next background due to thin background.
+  //nästnästkommande pga smal bakgrund
   offset.x = x + 2*source->w;
   offset.y = y + int(cameraY + 0.5 - 143);
   SDL_BlitSurface( source, NULL, destination, &offset );
+  
 }
 
 SDL_Surface *load_image(std::string filename)
 {
   SDL_Surface* loaded_image = NULL;
+
   SDL_Surface* optimized_image = NULL;
+
   loaded_image = IMG_Load(filename.c_str());
 
   if(loaded_image != NULL)
     {
       optimized_image = SDL_DisplayFormat(loaded_image);
+
       SDL_FreeSurface(loaded_image);
     }
+
+
   return optimized_image;
 }
 
@@ -80,6 +88,7 @@ bool init()
     {
       return false;
     }
+
   if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
     {
       return false;
@@ -102,10 +111,10 @@ void Tower_Shoot(float StartX, float StartY, float TargetX, float TargetY, float
   float narl, mots, hyp, grader;
   float arctan;
 
-  narl = TargetX - StartX; //Adjacent side.
-  mots = TargetY - StartY; //Opposite side.
+  narl = TargetX - StartX; //närliggande katet
+  mots = TargetY - StartY; //motstående katet
   
-  arctan = atan(narl/mots); //Degrees.
+  arctan = atan(narl/mots); //grader
   
   xVel = sin(arctan);
   yVel = cos(arctan);
@@ -149,31 +158,21 @@ void BulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, i
 	      
 	      if(bullet->Collision(Platforms[p]) && enemy_tower == 0)
 		{
-		  if( Bullets.at(b) != NULL ) 
-		    {
-		      delete Bullets.at(b);
-		      Bullets.at(b) = NULL;
-		      Bullets.erase(Bullets.begin()+b); //MÃ¥ste ta delete. ger plats 0+i.
-		    }
+		  Bullets.erase(Bullets.begin()+b);
 		  if(enemy != 0 && enemy->Health != 0)
 		    {
 		      enemy->Health -= 1;
 		    }
-		  else if(enemy != 0 && enemy->Health == 0) //Killed enemy.
+		  else if(enemy != 0 && enemy->Health == 0)
 		    {
-		      if( Platforms.at(p) != NULL )
-			{
-			  delete Platforms.at(p);
-			  Platforms.at(p) = NULL;
-			  Platforms.erase(Platforms.begin()+p);
-			}
+		      Platforms.erase(Platforms.begin()+p);
 		    }
 		}
-	      //If shot outside screen +/- 774.
+	      
+	      //om skott utanför skärmen774
 	      else if(bullet->x > (playerx + 774) || bullet->x < (playerx - 774))
 		{
-		  //delete Bullets.at( Bullets.begin()+b );
-		  Bullets.erase(Bullets.begin()+b); //mÃ¥ste ta delete
+		  Bullets.erase(Bullets.begin()+b);
 		}
 	    }
 	}
@@ -193,7 +192,11 @@ int main(int argc, char* args[])
   bool Load_Level = false;
   bool Select_Level = false;
   std::string level;// = "Forest_Level.txt";
+  //std::string saved_level = "Saved_Level.txt";
   int NoHurtCounter = 0;
+
+  //music
+  
   
   std::vector<Object*> Start_Menu_V;
   Start_Menu_V.push_back(new Object(95, 0, 180, 800, "bild/New_Game.jpg")); //0
@@ -248,55 +251,55 @@ int main(int argc, char* args[])
   std::string BackgroundName;
   SDL_Surface *background = NULL;
   int bgX = 0, bgY = 0;
+  //load_level(Platforms, "treelevel.txt", BackgroundName);
+  //background = IMG_Load(BackgroundName.c_str());
+  //BackgroundName får namnet på bildens desination
+
 
   if( init() == false )
+    {
       return 1;
+    }
 
   while( quit == false )
     {
       while(Start_Menu == true)
 	{
 	  Mix_HaltMusic();
-	  if(Start_Game_Menu(quit, Game, Start_Menu, Load_Level, Select_Level, 
-			     screen, event, level, player, Start_Menu_Position, 
-			     Start_Menu_V) == 1) {
-	    return 1;    
-	  }
+	  if(Start_Game_Menu(quit, Game, Start_Menu, Load_Level, Select_Level, screen, event, level, player, Start_Menu_Position, Start_Menu_V) == 1)
+	    return 1;
+	     
 	  while(Select_Level == true)
 	    {    
-	      if(Select_Level_Menu(Select_Level, Load_Level, Start_Menu, quit, 
-				   Game, player.Game_Over, screen, event, level, 
-				   Select_Level_Position, Select_Level_V, 
-				   player) == 1) {
+	      if(Select_Level_Menu(Select_Level, Load_Level, Start_Menu, quit, Game, player.Game_Over, screen, event, level, Select_Level_Position, Select_Level_V, player) == 1)
 		return 1;
-	      }
 	    }
 	}
+
       while (player.Paus_Menu == true)
 	{
-	  if( Paus_Menu_F(Start_Menu, Game, quit, player.Paus_Menu, screen, 
-			  event, Paus_Menu_Position, Paus_Menu_V) == 1) {
+	  if( Paus_Menu_F(Start_Menu, Game, quit, player.Paus_Menu, screen, event, Paus_Menu_Position, Paus_Menu_V) == 1)
 	    return 1;
-	  }
 	}
+
       while (player.Game_Over == true)
 	{
 	  Mix_HaltMusic();
-	  if( Game_Over_Menu(Load_Level, quit, Game, Start_Menu, player.Paus_Menu, 
-			     player.Game_Over, screen, event, screen_height, 
-			     screen_width, Game_Over_Position, Game_Over_V, 
-			     level, player) == 1) {
+	  //Mix_PlayChannel(-1, Game_Over, 0);
+	  if( Game_Over_Menu(Load_Level, quit, Game, Start_Menu, player.Paus_Menu, player.Game_Over, screen, event, screen_height, screen_width, Game_Over_Position, Game_Over_V, level, player) == 1)
 	    return 1; 
-	  }
 	}
+
       if (Load_Level == true)
 	{
 	  Load_Level = false;
-	  load_level(Platforms, level, BackgroundName, player, Bullets);
+	  load_level(Platforms, level, BackgroundName, player);
 	  background = IMG_Load( BackgroundName.c_str() );
-	  Load_Sound(level, music, Player_Shoot, Player_Jump, Player_Hurt, 
-		     Player_Jumps_Enemy, Enemy_Dies, Game_Over);
+	  Load_Sound(level, music, Player_Shoot, Player_Jump, Player_Hurt, Player_Jumps_Enemy, Enemy_Dies, Game_Over);
 	}
+
+      
+
       if (Game == true)
 	{
 	  fps.start();
@@ -305,20 +308,21 @@ int main(int argc, char* args[])
 	    {
 	      player.Handle_Input(event, Player_Shoot, Player_Jump);
 
-	      if( event.type == SDL_QUIT ) 
+	      if( event.type == SDL_QUIT )
 		{
 		  quit = true;
 		  Game = false;
 		}
 	    }
-	  if(Mix_PlayingMusic() == 0) {
-	      if( Mix_PlayMusic(music, -1) == -1 ) 
+	  if(Mix_PlayingMusic() == 0)
+	    {
+	      if( Mix_PlayMusic(music, -1) == -1 )
 		{
 		  return 1;
 		}
 	    }
  
-	  //Player shoots.
+	  //player skjuter/////////////////////////////////
 	  if(player.Shoot && player.Ammo != 0)
 	    {
 	      int speed = player.Shooting();
@@ -331,6 +335,7 @@ int main(int argc, char* args[])
 	      player.Shoot = false;
 	      player.Ammo -= 1;
 	    }
+	  /////////////////////////////////////////////////
 	  
 	  if(Bullets.size() != 0)
 	    {
@@ -338,24 +343,39 @@ int main(int argc, char* args[])
 		{
 		  bulletloop = dynamic_cast<MovingObject*>(Bullets[i]);
 		  bulletloop->BulletMovement();
-		  //Increase x, depending on MoveSpeed.
+		  //ökar x beroende på MoveSpeed
 		}
 	    }
 
-	  //Player dies.	  
+	  //player dör///////////////////
+	  
 	  if(player.Health == 0)
 	    player.yVel -= 50;
+	  
 
-	  for(int i = 0; i < Platforms.size(); ++i)
+	  for(int i = 0; i < Platforms.size(); ++i)  //nytt
 	    {
 	      mp = dynamic_cast<MovingPlatform*>(Platforms[i]);
 	      enemy = dynamic_cast<Enemy*>(Platforms[i]);
 	      enemy_simple = dynamic_cast<Enemy_Simple*>(Platforms[i]);
 	      enemy_creeper = dynamic_cast<Enemy_Creeper*>(Platforms[i]);
 	      enemy_tower = dynamic_cast<Enemy_Tower*>(Platforms[i]);
+	      //enemy_tank = dynamic_cast<Enemy_Tank*>(Platforms[i]);
 	      
 	      if(mp!=0)
 		mp->Elevate();
+	      /*
+	      if(enemy_tank != 0)
+		{
+		  if(player.x > enemy_tank->x - enemy_tank->Range && player.x < enemy_tank->x + enemy_tank->Range)
+		    {
+		      enemy_tank->Animations = 1;
+		      enemy_tank->AI_Tank(player.x);
+		    }
+		  else
+		    enemy_tank->Animations = 0;
+		}
+	      */
 	      else if(enemy_simple != 0)
 		{
 		  if(enemy_simple->y > enemy_simple->GroundLevel)
@@ -366,11 +386,13 @@ int main(int argc, char* args[])
 		}
 	      else if(enemy_creeper != 0)
 		{
-		  if(player.x > enemy_creeper->x - enemy_creeper->Range && 
-		     player.x < enemy_creeper->x + enemy_creeper->Range)
+		  if(player.x > enemy_creeper->x - enemy_creeper->Range && player.x < enemy_creeper->x + enemy_creeper->Range)
 		    {
 		      enemy_creeper->AI_Creeper(player.x);
+		      //enemy_creeper->Animations = 1;
 		    }
+		  //else
+		    //enemy_creeper->Animations = 0;
 		}
 	      else if(enemy_tower != 0)
 		{
@@ -384,11 +406,10 @@ int main(int argc, char* args[])
 		      enemy_tower->ShootCount += 1;
 		      if(enemy_tower->ShootCount > enemy_tower->ShootDelay)
 			{
-			  bullet2 = new MovingObject(enemy_tower->x+enemy_tower->Width/2-5, 
-						     enemy_tower->y+enemy_tower->Height/2, 
-						     10, 10, 0, "bild/laser.png");
-			  Tower_Shoot(enemy_tower->x, enemy_tower->y, player.x, player.y, 
-				      bullet2->xVel, bullet2->yVel);
+			  bullet2 = new MovingObject(enemy_tower->x+enemy_tower->Width/2-5, enemy_tower->y+enemy_tower->Height/2, 10, 10, 0, "bild/laser.png");
+		      
+			  //enemy_tower->Tower_Shoot(player.x, player.y, bullet2->xVel, bullet2->yVel); fixa
+			  Tower_Shoot(enemy_tower->x, enemy_tower->y, player.x, player.y, bullet2->xVel, bullet2->yVel);
 			  Bullets.push_back(bullet2);
 			  enemy_tower->ShootCount = 0;
 			}
@@ -431,14 +452,14 @@ int main(int argc, char* args[])
 		    {
 		      for(int b = 0; b < 10; b++)
 			{
-			  //Speed left.
+			  //SPEED LEFT
 			  Blockpointer = new Object(1970+b*(-30), -350, 30, 30, "bild/Blocks/speedblockleft.jpg", 0, 0);
 			  Platforms.insert(Platforms.begin(),Blockpointer);
 			}
 
 		      for(int f = 0; f < 66; f++)
 			{
-			  //Flying blocks.
+			  //FLYGBLOCK
 			  Blockpointer = new Object(1640, -380+f*(-30), 30, 30, "bild/Blocks/flyblockup.jpg", 0, 0);
 			  Platforms.insert(Platforms.begin(),Blockpointer);
 			}
@@ -465,14 +486,17 @@ int main(int argc, char* args[])
 
 	      if(enemy != 0 && enemy_simple == 0)
 		enemy->EnemyMove(Platforms);
+	      
 	    }
 	  
 	  BulletHit(Platforms, Bullets, player.x, screen_width, screen_height);
+	  
 	  player.Handle_Player(screen_width, screen_height, bgX, bgY, background);
 	  player.Move(Platforms, Bullets, Player_Hurt, Player_Jumps_Enemy, Enemy_Dies);
 
 	  if(player.NoHurt == true)
 	    {
+	      
 	      NoHurtCounter += 1;
 	      if(NoHurtCounter >= 50)
 	      {
@@ -486,6 +510,7 @@ int main(int argc, char* args[])
 	  if(level == "Forest_Level.txt")
 	    SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x79, 0xC9, 0xFA ) );
 	  
+	  
 	  handle_background(bgX, bgY, background, screen, player.CameraY);
 
 	  for(int i = 0; i < Bullets.size(); i++)
@@ -494,6 +519,7 @@ int main(int argc, char* args[])
 	    }
 
 	  player.Show(screen, player.CameraX, player.CameraY);
+      
       
 	  for (int i = 0; i < Platforms.size(); i++)
 	    {
@@ -507,6 +533,7 @@ int main(int argc, char* args[])
 	    {
 	      return 1;
 	    }
+      
 	  if( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
 	    {
 	      SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );

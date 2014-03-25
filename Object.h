@@ -6,6 +6,11 @@
 #include <string>
 #include <vector>
 
+/*
+Base class. Contains functions every subclass uses: how to draw the object 
+on screen.
+ */
+
 class Object
 {
  public:
@@ -17,7 +22,7 @@ class Object
     CurrentFrame = 0;
     Animations = 0;
   }
-  //Måste ha en Virtual funktion för att skiten ska bli polymorf
+  //Virtual in order to be polymorph.
   virtual ~Object();
 
 

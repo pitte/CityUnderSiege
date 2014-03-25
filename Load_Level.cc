@@ -1,15 +1,45 @@
-void load_level(std::vector<Object*>& Platforms, std::string& level, std::string& BackgroundName, Player& player)
+/*
+  Reads a level from file, complete with enemy placement.
+*/
+
+void load_level(std::vector<Object*>& Platforms, std::string& level, std::string& BackgroundName, Player& player, std::vector<Object*>& Bullets)
 {
   float bl1, bl2, bl3, bl4, bl5, bl6, bl7, bl8, bl9, bl10, bl11;
-
   std::string x;
   std::ifstream bandesign;
   std::vector<std::string> blocken;
   player.xVel = 0;
   player.yVel = 0;
-  Platforms.clear();
+
+  //Delete the objects since they were created with 'new'.
+  if( !Bullets.empty() ) 
+    {
+      for (unsigned int i = 0; i<Bullets.size(); ++i)
+	{
+	  if( Bullets.at(i) != NULL ) 
+	    {
+	      delete Bullets.at(i);
+	      Bullets.at(i) = NULL;
+	    }
+	}
+    }
+  Bullets.clear(); //Remove the pointers.
   
-  bandesign.open(level.c_str());
+  //Delete the objects since they were created with 'new'.
+  if( !Platforms.empty() ) 
+    {
+      for (unsigned int i = 0; i<Platforms.size(); ++i)
+	{
+	  if( Platforms.at(i) != NULL ) 
+	    {
+	      delete Platforms.at(i);
+	      Platforms.at(i) = NULL;
+	    }
+	}
+    }
+  Platforms.clear(); //Remove the pointers.
+
+  bandesign.open( level.c_str() );
 
   while(bandesign>>x)
     {
@@ -54,12 +84,12 @@ void load_level(std::vector<Object*>& Platforms, std::string& level, std::string
 	    }
 	  else if(blocken[5] == "simple")
 	    {
-	      std::istringstream b5(blocken[6]);//movespeed
-	      std::istringstream b6(blocken[7]);//health
-	      std::istringstream b7(blocken[8]);//to
-	      std::istringstream b8(blocken[9]);//frames
-	      std::istringstream b9(blocken[10]);//anim
-	      std::istringstream b10(blocken[11]);//ground
+	      std::istringstream b5(blocken[6]); //Movespeed.
+	      std::istringstream b6(blocken[7]); //Health.
+	      std::istringstream b7(blocken[8]); //To.
+	      std::istringstream b8(blocken[9]); //Frames.
+	      std::istringstream b9(blocken[10]); //Anim.
+	      std::istringstream b10(blocken[11]); //Ground.
 	      b5>>bl5;
 	      b6>>bl6;
 	      b7>>bl7;
@@ -71,11 +101,11 @@ void load_level(std::vector<Object*>& Platforms, std::string& level, std::string
 	    }
 	  else if(blocken[5] == "creeper")
 	    {
-	      std::istringstream b5(blocken[6]);//movespeed
-	      std::istringstream b6(blocken[7]);//health
-	      std::istringstream b7(blocken[8]);//radius
-	      std::istringstream b8(blocken[9]);//frames
-	      std::istringstream b9(blocken[10]);//anim
+	      std::istringstream b5(blocken[6]); //Movespeed.
+	      std::istringstream b6(blocken[7]); //Health.
+	      std::istringstream b7(blocken[8]); //Radius.
+	      std::istringstream b8(blocken[9]); //Frames.
+	      std::istringstream b9(blocken[10]); //Anim.
 	      b5>>bl5;
 	      b6>>bl6;
 	      b7>>bl7;
@@ -86,13 +116,13 @@ void load_level(std::vector<Object*>& Platforms, std::string& level, std::string
 	    }
 	  else if(blocken[5] == "tower")
 	    {
-	      std::istringstream b5(blocken[6]);//movespeed
-	      std::istringstream b6(blocken[7]);//to i y
-	      std::istringstream b7(blocken[8]);//health
-	      std::istringstream b8(blocken[9]);//radius
-	      std::istringstream b9(blocken[10]);//delay
-	      std::istringstream b10(blocken[11]);//frames
-	      std::istringstream b11(blocken[12]);//anim
+	      std::istringstream b5(blocken[6]); //Movespeed.
+	      std::istringstream b6(blocken[7]); //To i y.
+	      std::istringstream b7(blocken[8]); //Health.
+	      std::istringstream b8(blocken[9]); //Radius.
+	      std::istringstream b9(blocken[10]); //Delay.
+	      std::istringstream b10(blocken[11]); //Frames.
+	      std::istringstream b11(blocken[12]); //Anim.
 	      b5>>bl5;
 	      b6>>bl6;
 	      b7>>bl7;
@@ -105,11 +135,11 @@ void load_level(std::vector<Object*>& Platforms, std::string& level, std::string
 	    }
 	  else if(blocken[5] == "tank")
 	    {
-	      std::istringstream b5(blocken[6]);//movespeed
-	      std::istringstream b6(blocken[7]);//health
-	      std::istringstream b7(blocken[8]);//range
-	      std::istringstream b8(blocken[9]);//frames
-	      std::istringstream b9(blocken[10]);//anim
+	      std::istringstream b5(blocken[6]); //Movespeed.
+	      std::istringstream b6(blocken[7]); //Health.
+	      std::istringstream b7(blocken[8]); //Range.
+	      std::istringstream b8(blocken[9]); //Frames.
+	      std::istringstream b9(blocken[10]); //Anim.
 	      b5>>bl5;
 	      b6>>bl6;
 	      b7>>bl7;
