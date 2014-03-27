@@ -40,14 +40,14 @@
 6352 675 28 112 bild/ForestBlock.png object 0 0 ;
 6305 516 159 160 bild/treewithbush.png object 0 0 ;
 
+700 20 200 300 bild/Exit_Game.jpg object 0 0 ;
+
 4952 375 28 112 bild/ForestBlock.png object 0 0 ;
 5176 275 28 112 bild/ForestBlock.png object 0 0 ;
 5400 275 28 112 bild/ForestBlock.png object 0 0 ;
 5624 275 28 112 bild/ForestBlock.png object 0 0 ;
 5848 275 28 112 bild/ForestBlock.png object 0 0 ;
 6072 375 28 112 bild/ForestBlock.png object 0 0 ;
-
-
 
 1904 525 28 112 bild/ForestBlock.png object 0 0 ;
 708 200 28 112 bild/ForestBlock.png object 0 0 ;
@@ -58,7 +58,6 @@
 1268 200 28 112 bild/ForestBlock.png object 0 0 ;
 1380 200 28 112 bild/ForestBlock.png object 0 0 ;
 
-
 1790 -2200 28 112 bild/ForestBlock.png object 0 0 ;
 1902 -2200 28 112 bild/ForestBlock.png object 0 0 ;
 2014 -2200 28 112 bild/ForestBlock.png object 0 0 ;
@@ -66,9 +65,6 @@
 2238 -2200 28 112 bild/ForestBlock.png object 0 0 ;
 2350 -2200 28 112 bild/ForestBlock.png object 0 0 ;
 
-708 169 30 30 bild/Levers/Lever1.png object 1 1 ;
-2180 -530 30 30 bild/Levers/Lever2.png object 1 1 ;
-1670 -2330 30 30 bild/Blocks/activationblock.jpg object 0 0 ;
 2180 -500 30 30 bild/Blocks/block.jpg object 1 1 ;
 
 2016 375 30 30 bild/Blocks/redblock.png object 0 0 ;
@@ -88,7 +84,6 @@
 1200 -100 24 28 bild/enemytower.png tower 0 1 0 250 1 0 0 ;
 1267 -100 24 28 bild/enemytower.png tower 0 1 0 250 1 0 0 ;
 2200 400 24 28 bild/enemytower.png tower 7 1 100 200 10 0 0 ;
-2400 -2350 24 28 bild/enemytowertrigger1.png tower 0 1 100 500 50 0 0 ;
 100 605 35 70 bild/enemycreeper.png creeper 3 2 500 4 1 ;
 1124 500 22 36 bild/enemysimple.png simple 2 1 100 3 1 633 ;
 1374 500 22 36 bild/enemysimple.png simple 2 1 100 3 1 633 ;
@@ -96,7 +91,5 @@
 1874 500 22 36 bild/enemysimple.png simple 2 1 100 3 1 633 ;
 
 -100 645 30 30 bild/weaponcrate.png moving 0 1100 ;
-1049 35 30 30 bild/healthcrate.png moving 0 1100 ;
-1149 35 30 30 bild/healthcrate.png moving 0 1100 ;
 
 0 0 0 0 bild/8BitLandscape.jpg background ;

@@ -153,7 +153,7 @@ void BulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, i
 		    {
 		      delete Bullets.at(b);
 		      Bullets.at(b) = NULL;
-		      Bullets.erase(Bullets.begin()+b); //Måste ta delete. ger plats 0+i.
+		      Bullets.erase(Bullets.begin()+b);
 		    }
 		  if(enemy != 0 && enemy->Health != 0)
 		    {
@@ -172,8 +172,12 @@ void BulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, i
 	      //If shot outside screen +/- 774.
 	      else if(bullet->x > (playerx + 774) || bullet->x < (playerx - 774))
 		{
-		  //delete Bullets.at( Bullets.begin()+b );
-		  Bullets.erase(Bullets.begin()+b); //måste ta delete
+		  if( Bullets.at(b) != NULL ) 
+		    {
+		      delete Bullets.at(b);
+		      Bullets.at(b) = NULL;
+		      Bullets.erase(Bullets.begin()+b);
+		    }
 		}
 	    }
 	}
@@ -394,7 +398,7 @@ int main(int argc, char* args[])
 			}
 		    }
 		}
-	      
+	      /*
 	      else if(player.Use && player.Collision(Platforms[i]) && Platforms[i]->Picture == "bild/Levers/Lever1.png")
 		{
 		  Platforms[i]->Animations = 1;
@@ -406,8 +410,8 @@ int main(int argc, char* args[])
 			  Platforms.insert(Platforms.begin(),Blockpointer);
 			}
 		      Created = true;
-		    }
-		}
+		      }
+		 }
 	      else if(player.Use && player.Collision(Platforms[i]) && Platforms[i]->Picture == "bild/Levers/Lever2.png")
 		{
 		  Platforms[i]->Animations = 1;
@@ -423,7 +427,7 @@ int main(int argc, char* args[])
 		      Created2 = true;
 		    }
 		}
-
+	      
 	      else if(player.Use && player.Collision(Platforms[i]) && Platforms[i]->Picture == "bild/Levers/Lever3.png")
 		{
 		  Platforms[i]->Animations = 1;
@@ -448,7 +452,7 @@ int main(int argc, char* args[])
 		      Platforms.insert(Platforms.begin(), Blockpointer);
 		      Created3 = true;		      
 		    }
-		}
+		    }
 	      else if(player.Collision(Platforms[i]) && Platforms[i]->Picture == "bild/Blocks/activationblock.jpg")
 		{
 		  Platforms[i]->Animations = 1;
@@ -461,7 +465,7 @@ int main(int argc, char* args[])
 			}
 		      Created4 = true;
 		    }
-		}
+		}*/
 
 	      if(enemy != 0 && enemy_simple == 0)
 		enemy->EnemyMove(Platforms);

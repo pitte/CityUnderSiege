@@ -1,42 +1,33 @@
-
-
 int Start_Game_Menu(bool &quit, bool &Game, bool &Start_Menu, bool &Load_Level, bool &Select_Level, SDL_Surface* &screen, SDL_Event &event, std::string &level, Player &player, int &Start_Menu_Position, std::vector<Object*> &Start_Menu_V)
 {
-  
   SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
-	  
-
-  if(Start_Menu_Position == 0) //new game markerad
+  
+  if(Start_Menu_Position == 0) //New game.
     {
       Start_Menu_V[1]->Show(screen, 0, 0);
       Start_Menu_V[2]->Show(screen, 0, 0);
       Start_Menu_V[4]->Show(screen, 0, 0);
     }
-
-  else if(Start_Menu_Position == 1) //select level
+  else if(Start_Menu_Position == 1) //Select level.
     {
       Start_Menu_V[0]->Show(screen, 0, 0);
       Start_Menu_V[3]->Show(screen, 0, 0);
       Start_Menu_V[4]->Show(screen, 0, 0);
     }
-
-  else if(Start_Menu_Position == 2) // exit game
+  else if(Start_Menu_Position == 2) //Exit game.
     {
       Start_Menu_V[0]->Show(screen, 0, 0);
       Start_Menu_V[2]->Show(screen, 0, 0);
       Start_Menu_V[5]->Show(screen, 0, 0);
     }
-	  
-	  	  
+	  	  	  
   if(SDL_Flip(screen) == -1)
     {
       return 1;
     }
 	  
-
   while( SDL_PollEvent( &event ) )
     {	  
-      
       if(event.type == SDL_KEYDOWN)
 	{
 	  switch(event.key.keysym.sym)
@@ -48,8 +39,6 @@ int Start_Game_Menu(bool &quit, bool &Game, bool &Start_Menu, bool &Load_Level, 
 		  Start_Menu_Position = 2;
 		}
 	      break;
-
-
 	    case SDLK_DOWN:  
 	      ++Start_Menu_Position;
 	      if (Start_Menu_Position == 3)
@@ -57,11 +46,10 @@ int Start_Game_Menu(bool &quit, bool &Game, bool &Start_Menu, bool &Load_Level, 
 		  Start_Menu_Position = 0;
 		}
 	      break;
-
 	    case SDLK_RETURN: 
 	      if (Start_Menu_Position == 0) 
 		{
-		  //New Game
+		  //New Game.
 		  level = "City_Level.txt";
 		  player.x = 300; //19000
 		  player.y = 400; //0
@@ -76,26 +64,22 @@ int Start_Game_Menu(bool &quit, bool &Game, bool &Start_Menu, bool &Load_Level, 
 		  Game = true;
 		  Start_Menu = false;
 		}
-
 	      else if (Start_Menu_Position == 1)
 		{
-		  // Select level
+		  // Select level.
 		  Select_Level = true;
 		}
-
 	      else if (Start_Menu_Position == 2)
 		{
-		  //Exit Game
+		  //Exit Game.
 		  quit = true;
 		  Game = false;
 		  Start_Menu = false;
 		}
-	      break;
-		  
+	      break; 
 	    default: break;
 	    }
 	}
-
       else if(event.type == SDL_KEYUP)
 	{
 	  switch(event.key.keysym.sym)
@@ -113,27 +97,17 @@ int Start_Game_Menu(bool &quit, bool &Game, bool &Start_Menu, bool &Load_Level, 
     }
 }
 
-
-
-
-
-
-
-
-
 int Paus_Menu_F(bool &Start_Menu, bool &Game, bool &quit, bool &Paus_Menu, SDL_Surface* &screen, SDL_Event &event, int &Paus_Menu_Position, std::vector<Object*> &Paus_Menu_V)
 {
-
   if (Paus_Menu_Position == 0)
     {
-      //resume game
+      //Resume game.
       Paus_Menu_V[1]->Show(screen, 0, 0);
       Paus_Menu_V[2]->Show(screen, 0, 0);
     }
-
   else if (Paus_Menu_Position == 1)
     {
-      //exit game
+      //Exit game.
       Paus_Menu_V[0]->Show(screen, 0, 0);
       Paus_Menu_V[3]->Show(screen, 0, 0);
     }
@@ -156,8 +130,6 @@ int Paus_Menu_F(bool &Start_Menu, bool &Game, bool &quit, bool &Paus_Menu, SDL_S
 		  Paus_Menu_Position = 1;
 		}
 	      break;
-
-
 	    case SDLK_DOWN:  
 	      ++Paus_Menu_Position;
 	      if (Paus_Menu_Position == 2)
@@ -165,27 +137,24 @@ int Paus_Menu_F(bool &Start_Menu, bool &Game, bool &quit, bool &Paus_Menu, SDL_S
 		  Paus_Menu_Position = 0;
 		}
 	      break;
-
 	    case SDLK_RETURN: 
 	      if (Paus_Menu_Position == 0) 
 		{
-		  //Resume Game
+		  //Resume Game.
 		  Paus_Menu = false;
 		}
 	      else if (Paus_Menu_Position == 1)
 		{
-		  //Exit Game
+		  //Exit Game.
 		  quit = false;
 		  Game = false;
 		  Paus_Menu = false;
 		  Start_Menu = true;
 		}
 	      break;
-		  
 	    default: break;
 	    }
 	}
-
       else if(event.type == SDL_KEYUP)
 	{
 	  switch(event.key.keysym.sym)
@@ -207,28 +176,22 @@ int Paus_Menu_F(bool &Start_Menu, bool &Game, bool &quit, bool &Paus_Menu, SDL_S
     }
 }
 
-
 int Game_Over_Menu(bool &Load_Level, bool &quit, bool &Game, bool &Start_Menu, bool &Paus_Menu, bool &Game_Over, SDL_Surface* &screen, SDL_Event &event, int screen_height, int screen_width, int &Game_Over_Position, std::vector<Object*> &Game_Over_V, std::string &level, Player& player)
 {
-
-
   if (Game_Over_Position == 0)
     {
-      //Restart Level
+      //Restart level.
       Game_Over_V[4]->Show(screen, 0, 0);
       Game_Over_V[1]->Show(screen, 0, 0);
       Game_Over_V[2]->Show(screen, 0, 0);
     }
-
   else if (Game_Over_Position == 1)
     {
-      //Main Menu
+      //Main Menu.
       Game_Over_V[4]->Show(screen, 0, 0);
       Game_Over_V[0]->Show(screen, 0, 0);
       Game_Over_V[3]->Show(screen, 0, 0);
     }
-
-
   if(SDL_Flip(screen) == -1)
     {
       return 1;
@@ -247,7 +210,6 @@ int Game_Over_Menu(bool &Load_Level, bool &quit, bool &Game, bool &Start_Menu, b
 		  Game_Over_Position = 1;
 		}
 	      break;
-
 	    case SDLK_DOWN:  
 	      ++Game_Over_Position;
 	      if (Game_Over_Position > 1)
@@ -255,11 +217,10 @@ int Game_Over_Menu(bool &Load_Level, bool &quit, bool &Game, bool &Start_Menu, b
 		  Game_Over_Position = 0;
 		}
 	      break;
-
 	    case SDLK_RETURN: 
 	      if (Game_Over_Position == 0) 
 		{
-		  //restart
+		  //Restart.
 		  Game_Over = false;
 		  Game = true;
 		  Load_Level = true;
@@ -280,21 +241,18 @@ int Game_Over_Menu(bool &Load_Level, bool &quit, bool &Game, bool &Start_Menu, b
 		      player.x = 400;
 		      player.y = 400;
 		    }
-		  
 		}
 	      else if (Game_Over_Position == 1)
 		{
-		  //main menu
+		  //Main menu.
 		  Game_Over = false;
 		  Game = false;
 		  Start_Menu = true;
 		}
 	      break;
-		  
 	    default: break;
 	    }
 	}
-
       else if(event.type == SDL_KEYUP)
 	{
 	  switch(event.key.keysym.sym)
@@ -313,50 +271,36 @@ int Game_Over_Menu(bool &Load_Level, bool &quit, bool &Game, bool &Start_Menu, b
     }
 }
 
-
-
-
 int Select_Level_Menu(bool &Select_Level, bool &Load_Level, bool &Start_Menu, bool &quit, bool &Game, bool &Game_Over, SDL_Surface* &screen, SDL_Event &event, std::string &level, int &Select_Level_Position, std::vector<Object*> Select_Level_V, Player &player)
 {
-
+  SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
   
-
-  SDL_FillRect( screen, &screen->clip_rect, 
-		SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) );
-
-
   if (Select_Level_Position == 0)
     {
-      //Level 1
-    
+      //Level 1.
       Select_Level_V[1]->Show(screen, 0, 0);
       Select_Level_V[2]->Show(screen, 0, 0);
       Select_Level_V[4]->Show(screen, 0, 0);
-    }
-
+    }  
   else if (Select_Level_Position == 1)
     {
-      //Level 2
-     
+      //Level 2.
       Select_Level_V[0]->Show(screen, 0, 0);
       Select_Level_V[3]->Show(screen, 0, 0);
       Select_Level_V[4]->Show(screen, 0, 0);
     }
   else if (Select_Level_Position == 2)
     {
-      //Back
-   
+      //Back.
       Select_Level_V[0]->Show(screen, 0, 0);
       Select_Level_V[2]->Show(screen, 0, 0);
       Select_Level_V[5]->Show(screen, 0, 0);
     }
 
-
   if(SDL_Flip(screen) == -1)
     {
       return 1;
     }
-
 
   while( SDL_PollEvent( &event ) )
     {	  
@@ -371,7 +315,6 @@ int Select_Level_Menu(bool &Select_Level, bool &Load_Level, bool &Start_Menu, bo
 		  Select_Level_Position = 2;
 		}
 	      break;
-
 	    case SDLK_DOWN:  
 	      ++Select_Level_Position;
 	      if (Select_Level_Position == 3)
@@ -379,11 +322,10 @@ int Select_Level_Menu(bool &Select_Level, bool &Load_Level, bool &Start_Menu, bo
 		  Select_Level_Position = 0;
 		}
 	      break;
-
 	    case SDLK_RETURN: 
 	      if (Select_Level_Position == 0) 
 		{
-		  //level 1
+		  //Level 1.
 		  Select_Level = false;
 		  Start_Menu = false;
 		  Load_Level = true;
@@ -401,7 +343,7 @@ int Select_Level_Menu(bool &Select_Level, bool &Load_Level, bool &Start_Menu, bo
 		}
 	      else if (Select_Level_Position == 1)
 		{
-		  //level 2
+		  //Level 2.
 		  player.xVel = 0;
 		  player.yVel = 0;
 		  player.x = 400;
@@ -419,16 +361,14 @@ int Select_Level_Menu(bool &Select_Level, bool &Load_Level, bool &Start_Menu, bo
 		}
 	      else if (Select_Level_Position == 2)
 		{
-		  //Main Menu
+		  //Main Menu.
 		  Select_Level = false;
 		  Start_Menu = true;
 		}
-	      break;
-		  
+	      break;		 
 	    default: break;
 	    }
 	}
-
       else if(event.type == SDL_KEYUP)
 	{
 	  switch(event.key.keysym.sym)
