@@ -28,7 +28,6 @@ const int screen_width = 1024;
 const int screen_height = 768;
 const int screen_bpp = 32;
 const int FRAMES_PER_SECOND = 45;
-
 SDL_Surface *screen = NULL;
 SDL_Event event;
 Mix_Music* music = NULL;
@@ -84,14 +83,11 @@ bool init()
     {
       return false;
     }
-
   screen = SDL_SetVideoMode( screen_width, screen_height, screen_bpp, SDL_SWSURFACE );
-
   if( screen == NULL )
     {
       return false;
     }
-
   SDL_WM_SetCaption( "City Under Siege", NULL );
 
   return true;
@@ -101,12 +97,9 @@ void Tower_Shoot(float StartX, float StartY, float TargetX, float TargetY, float
 {
   float narl, mots, hyp, grader;
   float arctan;
-
   narl = TargetX - StartX; //Adjacent side.
-  mots = TargetY - StartY; //Opposite side.
-  
+  mots = TargetY - StartY; //Opposite side.  
   arctan = atan(narl/mots); //Degrees.
-  
   xVel = sin(arctan);
   yVel = cos(arctan);
   
@@ -134,10 +127,10 @@ void Tower_Shoot(float StartX, float StartY, float TargetX, float TargetY, float
 
 void BulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, int playerx, int screen_width, int screen_height)
 {
-  for(int b = 0; b < Bullets.size(); b++)
+  for(int b = 0; b < Bullets.size(); b++) //Check all bullets.
     {
       MovingObject* bullet = dynamic_cast<MovingObject*>(Bullets[b]);
-      for(int p = 0; p < Platforms.size(); p++)
+      for(int p = 0; p < Platforms.size(); p++) //Check collision with all objects except bullets.
 	{
 	  Enemy* enemy;
 	  Enemy_Tower* enemy_tower;
@@ -149,19 +142,19 @@ void BulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, i
 	      
 	      if(bullet->Collision(Platforms[p]) && enemy_tower == 0)
 		{
-		  if( Bullets.at(b) != NULL ) 
+		  if( Bullets.at(b) != NULL ) //Remove bullet.
 		    {
 		      delete Bullets.at(b);
 		      Bullets.at(b) = NULL;
 		      Bullets.erase(Bullets.begin()+b);
 		    }
-		  if(enemy != 0 && enemy->Health != 0)
+		  if(enemy != 0 && enemy->Health != 0) //Enemy hit but not dead.
 		    {
 		      enemy->Health -= 1;
 		    }
 		  else if(enemy != 0 && enemy->Health == 0) //Killed enemy.
 		    {
-		      if( Platforms.at(p) != NULL )
+		      if( Platforms.at(p) != NULL ) //Remove enemy so that it is not blitted on screen.
 			{
 			  delete Platforms.at(p);
 			  Platforms.at(p) = NULL;
@@ -169,7 +162,7 @@ void BulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, i
 			}
 		    }
 		}
-	      //If shot outside screen +/- 774.
+	      //If shot outside screen +/- 774, remove it.
 	      else if(bullet->x > (playerx + 774) || bullet->x < (playerx - 774))
 		{
 		  if( Bullets.at(b) != NULL ) 
@@ -196,9 +189,8 @@ int main(int argc, char* args[])
   bool quit = false;
   bool Load_Level = false;
   bool Select_Level = false;
-  std::string level;// = "Forest_Level.txt";
+  std::string level;
   int NoHurtCounter = 0;
-  
   std::vector<Object*> Start_Menu_V;
   Start_Menu_V.push_back(new Object(95, 0, 180, 800, "bild/New_Game.jpg")); //0
   Start_Menu_V.push_back(new Object(120, 0, 180, 800, "bild/New_Game_Markerad.jpg")); 
@@ -206,20 +198,17 @@ int main(int argc, char* args[])
   Start_Menu_V.push_back(new Object(115, 220, 180, 800, "bild/Select_Level_Markerad.jpg"));
   Start_Menu_V.push_back(new Object(95, 440, 180, 800, "bild/Exit_Game.jpg")); //6
   Start_Menu_V.push_back(new Object(120, 440, 180, 800, "bild/Exit_Game_Markerad.jpg"));
-
   std::vector<Object*> Paus_Menu_V;  
   Paus_Menu_V.push_back(new Object(100, 0, 180, 800, "bild/Resume_Game.jpg") );
   Paus_Menu_V.push_back(new Object(120, 0, 180, 800, "bild/Resume_Game_Markerad.jpg") );
   Paus_Menu_V.push_back(new Object(100, 180, 180, 800, "bild/Exit_Game.jpg") );
   Paus_Menu_V.push_back(new Object(120, 180, 180, 800, "bild/Exit_Game_Markerad.jpg") );
-
   std::vector<Object*> Game_Over_V;
   Game_Over_V.push_back(new Object(5, 200, 180, 1300, "bild/Restart.png") );
   Game_Over_V.push_back(new Object(50, 200, 180, 1300, "bild/Restart_Markerad.png") );
   Game_Over_V.push_back(new Object(5, 380, 180, 800, "bild/Main_Menu.png") );
   Game_Over_V.push_back(new Object(50, 380, 180, 800, "bild/Main_Menu_markerad.png") );
   Game_Over_V.push_back(new Object(0, 0, screen_height, screen_width, "bild/Game_Over.jpg") );
-
   std::vector<Object*> Select_Level_V;
   Select_Level_V.push_back(new Object(5, 200, 180, 1300, "bild/Level1.png") );
   Select_Level_V.push_back(new Object(25, 200, 180, 1300, "bild/Level1_markerad.png") );
@@ -227,7 +216,6 @@ int main(int argc, char* args[])
   Select_Level_V.push_back(new Object(25, 350, 180, 800, "bild/Level2_markerad.png") );
   Select_Level_V.push_back(new Object(5, 500, 180, 800, "bild/Back.png") );
   Select_Level_V.push_back(new Object(25, 500, 180, 800, "bild/Back_markerad.png") );
-  
   Player player(4700, 650, 40, 79, 8, "bild/PlayerAnimations.png", 5, 3, 7);
   player.Width = 35;
   Timer fps;
@@ -248,109 +236,107 @@ int main(int argc, char* args[])
   bool Created4 = false, Created5 = false;
   int ShootCount = 0;
   std::vector<Object*> Platforms, Bullets;
-
   std::string BackgroundName;
   SDL_Surface *background = NULL;
   int bgX = 0, bgY = 0;
 
   if( init() == false )
-      return 1;
-
-  while( quit == false )
     {
-      while(Start_Menu == true)
+      return 1;
+    }
+
+  while( quit == false ) //Main game loop.
+    {
+      while(Start_Menu == true) //Start menu loop.
 	{
 	  Mix_HaltMusic();
-	  if(Start_Game_Menu(quit, Game, Start_Menu, Load_Level, Select_Level, 
-			     screen, event, level, player, Start_Menu_Position, 
-			     Start_Menu_V) == 1) {
-	    return 1;    
-	  }
+	  if(Start_Game_Menu(quit, Game, Start_Menu, Load_Level, Select_Level, screen, event, level, player, Start_Menu_Position, 
+			     Start_Menu_V) == 1) 
+	    {
+	      return 1;    
+	    }
 	  while(Select_Level == true)
 	    {    
-	      if(Select_Level_Menu(Select_Level, Load_Level, Start_Menu, quit, 
-				   Game, player.Game_Over, screen, event, level, 
-				   Select_Level_Position, Select_Level_V, 
-				   player) == 1) {
-		return 1;
-	      }
+	      if(Select_Level_Menu(Select_Level, Load_Level, Start_Menu, quit, Game, player.Game_Over, screen, event, level, 
+				   Select_Level_Position, Select_Level_V, player) == 1)
+		{
+		  return 1;	      
+		}
 	    }
 	}
-      while (player.Paus_Menu == true)
+      while (player.Paus_Menu == true) //Paus menu loop.
 	{
-	  if( Paus_Menu_F(Start_Menu, Game, quit, player.Paus_Menu, screen, 
-			  event, Paus_Menu_Position, Paus_Menu_V) == 1) {
-	    return 1;
-	  }
+	  if( Paus_Menu_F(Start_Menu, Game, quit, player.Paus_Menu, screen, event, Paus_Menu_Position, Paus_Menu_V) == 1) 
+	    {
+	      return 1;	  
+	    }
 	}
-      while (player.Game_Over == true)
+      while (player.Game_Over == true) //Game over screen loop.
 	{
 	  Mix_HaltMusic();
-	  if( Game_Over_Menu(Load_Level, quit, Game, Start_Menu, player.Paus_Menu, 
-			     player.Game_Over, screen, event, screen_height, 
-			     screen_width, Game_Over_Position, Game_Over_V, 
-			     level, player) == 1) {
-	    return 1; 
-	  }
+	  if( Game_Over_Menu(Load_Level, quit, Game, Start_Menu, player.Paus_Menu, player.Game_Over, screen, event, screen_height, 
+			     screen_width, Game_Over_Position, Game_Over_V, level, player) == 1) 
+	    {
+	      return 1; 	  
+	    }
 	}
       if (Load_Level == true)
 	{
 	  Load_Level = false;
 	  load_level(Platforms, level, BackgroundName, player, Bullets);
 	  background = IMG_Load( BackgroundName.c_str() );
-	  Load_Sound(level, music, Player_Shoot, Player_Jump, Player_Hurt, 
-		     Player_Jumps_Enemy, Enemy_Dies, Game_Over);
+	  Load_Sound(level, music, Player_Shoot, Player_Jump, Player_Hurt, Player_Jumps_Enemy, Enemy_Dies, Game_Over);
 	}
-      if (Game == true)
+      if (Game == true) //Active game loop.
 	{
 	  fps.start();
-
-	  while( SDL_PollEvent( &event ) )
+	  while( SDL_PollEvent( &event ) ) //Key pressed, handle the input.
 	    {
 	      player.Handle_Input(event, Player_Shoot, Player_Jump);
-
 	      if( event.type == SDL_QUIT ) 
 		{
 		  quit = true;
 		  Game = false;
 		}
 	    }
-	  if(Mix_PlayingMusic() == 0) {
-	      if( Mix_PlayMusic(music, -1) == -1 ) 
+	  if(Mix_PlayingMusic() == 0) //Start music.
+	    {
+	    if( Mix_PlayMusic(music, -1) == -1 )
 		{
 		  return 1;
 		}
 	    }
- 
-	  //Player shoots.
-	  if(player.Shoot && player.Ammo != 0)
+	  if(player.Shoot && player.Ammo != 0) //Player shoots. If he has ammo spawn bullet.
 	    {
 	      int speed = player.Shooting();
 	      if(speed > 0)
-		bullet1 = new MovingObject(player.x+20, player.y+39, 8, 4, speed, "bild/bulletright.png");
+		{
+		  bullet1 = new MovingObject(player.x+20, player.y+39, 8, 4, speed, "bild/bulletright.png");
+		}
 	      if(speed < 0)
-		bullet1 = new MovingObject(player.x, player.y+39, 8, 4, speed, "bild/bulletleft.png");
+		{
+		  bullet1 = new MovingObject(player.x, player.y+39, 8, 4, speed, "bild/bulletleft.png");
+		}
 	  
 	      Bullets.push_back(bullet1);
 	      player.Shoot = false;
 	      player.Ammo -= 1;
-	    }
-	  
-	  if(Bullets.size() != 0)
+	    }	  
+	  if(Bullets.size() != 0) //Handle movement of all bullets.
 	    {
 	      for(int i = 0; i < Bullets.size(); i++)
 		{
 		  bulletloop = dynamic_cast<MovingObject*>(Bullets[i]);
 		  bulletloop->BulletMovement();
-		  //Increase x, depending on MoveSpeed.
 		}
 	    }
-
-	  //Player dies.	  
-	  if(player.Health == 0)
-	    player.yVel -= 50;
-
-	  for(int i = 0; i < Platforms.size(); ++i)
+	  
+	  if(player.Health == 0) //Player dies.
+	    {
+	      player.yVel -= 50;
+	    }
+	  
+	  for(int i = 0; i < Platforms.size(); ++i) //Handle AI for all enemies and platforms.
 	    {
 	      mp = dynamic_cast<MovingPlatform*>(Platforms[i]);
 	      enemy = dynamic_cast<Enemy*>(Platforms[i]);
@@ -359,19 +345,21 @@ int main(int argc, char* args[])
 	      enemy_tower = dynamic_cast<Enemy_Tower*>(Platforms[i]);
 	      
 	      if(mp!=0)
-		mp->Elevate();
+		{
+		  mp->Elevate();
+		}
 	      else if(enemy_simple != 0)
 		{
-		  if(enemy_simple->y > enemy_simple->GroundLevel)
-		    enemy_simple->inAir = false;
-		  
+		  if(enemy_simple->y > enemy_simple->GroundLevel) 
+		    {
+		      enemy_simple->inAir = false;
+		    }		  
 		  enemy_simple->AI_Simple();
 		  enemy_simple->Gravity();
 		}
 	      else if(enemy_creeper != 0)
 		{
-		  if(player.x > enemy_creeper->x - enemy_creeper->Range && 
-		     player.x < enemy_creeper->x + enemy_creeper->Range)
+		  if(player.x > enemy_creeper->x - enemy_creeper->Range && player.x < enemy_creeper->x + enemy_creeper->Range)
 		    {
 		      enemy_creeper->AI_Creeper(player.x);
 		    }
@@ -398,83 +386,17 @@ int main(int argc, char* args[])
 			}
 		    }
 		}
-	      /*
-	      else if(player.Use && player.Collision(Platforms[i]) && Platforms[i]->Picture == "bild/Levers/Lever1.png")
-		{
-		  Platforms[i]->Animations = 1;
-		  if(!Created)
-		    {		      
-		      for(int i = 0; i < 12; i++)
-			{
-			  Blockpointer = new Object(870+i*41, 0, 30, 30, "bild/Blocks/block.jpg", 0, 0);
-			  Platforms.insert(Platforms.begin(),Blockpointer);
-			}
-		      Created = true;
-		      }
-		 }
-	      else if(player.Use && player.Collision(Platforms[i]) && Platforms[i]->Picture == "bild/Levers/Lever2.png")
-		{
-		  Platforms[i]->Animations = 1;
-		  if(!Created2)
-		    {
-		      for(int i = 0; i < 10; i++)
-			{
-			  Blockpointer = new Object(2000+i*30, -350, 30, 30, "bild/Blocks/block.jpg", 0, 0);
-			  Platforms.insert(Platforms.begin(),Blockpointer);
-			}
-		      Blockpointer = new Object(2270, -380, 30, 30, "bild/Levers/Lever3.png", 1, 1);
-		      Platforms.insert(Platforms.begin(),Blockpointer);
-		      Created2 = true;
-		    }
-		}
-	      
-	      else if(player.Use && player.Collision(Platforms[i]) && Platforms[i]->Picture == "bild/Levers/Lever3.png")
-		{
-		  Platforms[i]->Animations = 1;
-		  if(!Created3)
-		    {
-		      for(int b = 0; b < 10; b++)
-			{
-			  //Speed left.
-			  Blockpointer = new Object(1970+b*(-30), -350, 30, 30, "bild/Blocks/speedblockleft.jpg", 0, 0);
-			  Platforms.insert(Platforms.begin(),Blockpointer);
-			}
-
-		      for(int f = 0; f < 66; f++)
-			{
-			  //Flying blocks.
-			  Blockpointer = new Object(1640, -380+f*(-30), 30, 30, "bild/Blocks/flyblockup.jpg", 0, 0);
-			  Platforms.insert(Platforms.begin(),Blockpointer);
-			}
-		      Blockpointer = new Object(1670, -350, 30, 30, "bild/Blocks/speedblockfake.jpg", 0, 0);
-		      Platforms.insert(Platforms.begin(), Blockpointer);
-		      Blockpointer = new Object(1640, -350, 30, 30, "bild/Blocks/block.jpg", 0, 0);
-		      Platforms.insert(Platforms.begin(), Blockpointer);
-		      Created3 = true;		      
-		    }
-		    }
-	      else if(player.Collision(Platforms[i]) && Platforms[i]->Picture == "bild/Blocks/activationblock.jpg")
-		{
-		  Platforms[i]->Animations = 1;
-		  if(!Created4)
-		    {
-		      for(int b = 0; b < 4; b++)
-			{
-			  Blockpointer = new Object(1670+b*30, -2200, 30, 30, "bild/Blocks/block.jpg", 0, 0);
-			  Platforms.insert(Platforms.begin(), Blockpointer);
-			}
-		      Created4 = true;
-		    }
-		}*/
-
 	      if(enemy != 0 && enemy_simple == 0)
-		enemy->EnemyMove(Platforms);
+		{
+		  enemy->EnemyMove(Platforms);
+		}
 	    }
 	  
-	  BulletHit(Platforms, Bullets, player.x, screen_width, screen_height);
-	  player.Handle_Player(screen_width, screen_height, bgX, bgY, background);
-	  player.Move(Platforms, Bullets, Player_Hurt, Player_Jumps_Enemy, Enemy_Dies, quit, Game, Start_Menu);
+	  BulletHit(Platforms, Bullets, player.x, screen_width, screen_height); //Collision for bullets.
+	  player.Handle_Player(screen_width, screen_height, bgX, bgY, background); //Handle gravity, friction and animations for player.
+	  player.Move(Platforms, Bullets, Player_Hurt, Player_Jumps_Enemy, Enemy_Dies, quit, Game, Start_Menu); //Collision player-world.
 
+	  //Player immortality-after-being-hurt-counter check.
 	  if(player.NoHurt == true)
 	    {
 	      NoHurtCounter += 1;
@@ -484,29 +406,28 @@ int main(int argc, char* args[])
 		NoHurtCounter = 0;
 	      }
 	    }
-	  if(level == "City_Level.txt")
-	    SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x26, 0xB8, 0xE9 ) );
-	  
-	  if(level == "Forest_Level.txt")
-	    SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x79, 0xC9, 0xFA ) );
-	  
-	  handle_background(bgX, bgY, background, screen, player.CameraY);
 
+	  //Print objects to screen.
+	  if(level == "City_Level.txt")
+	    {
+	      SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x26, 0xB8, 0xE9 ) );	  
+	    }
+	  if(level == "Forest_Level.txt")
+	    {
+	      SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x79, 0xC9, 0xFA ) );	 
+	    }
+	  handle_background(bgX, bgY, background, screen, player.CameraY);
 	  for(int i = 0; i < Bullets.size(); i++)
 	    {
 	      Bullets[i]->Show(screen, player.CameraX, player.CameraY);
 	    }
-
-	  player.Show(screen, player.CameraX, player.CameraY);
-      
+	  player.Show(screen, player.CameraX, player.CameraY);      
 	  for (int i = 0; i < Platforms.size(); i++)
 	    {
 	      Platforms[i]->Show(screen, player.CameraX, player.CameraY);
-	    }      
-	  
+	    }      	  
       	  player.DisplayHealth(screen);
-	  player.DisplayAmmo(screen);
-
+	  player.DisplayAmmo(screen);	  
 	  if(SDL_Flip(screen) == -1)
 	    {
 	      return 1;
@@ -515,6 +436,8 @@ int main(int argc, char* args[])
 	    {
 	      SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );
 	    }
+	  
+	  //Check if it is game over.
 	  if (player.Health == 0)
 	    {
 	      player.Game_Over = true;
@@ -523,6 +446,7 @@ int main(int argc, char* args[])
 	}
     }
   
+  //Exit program.
   SDL_FreeSurface(background);
   Mix_FreeChunk(Player_Shoot);
   Mix_FreeChunk(Player_Jump);
