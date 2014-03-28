@@ -55,7 +55,7 @@ void Player::Handle_Input(SDL_Event event, Mix_Chunk* Player_Shoot, Mix_Chunk* P
     }
 }
 
-void Player::Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, Mix_Chunk* Player_Hurt,  Mix_Chunk* Player_Jumps_Enemy, Mix_Chunk* Enemy_Dies)
+void Player::Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, Mix_Chunk* Player_Hurt,  Mix_Chunk* Player_Jumps_Enemy, Mix_Chunk* Enemy_Dies, bool& quit, bool& Game, bool& Start_Menu)
 {
   MovingPlatform* mp;
   Enemy* enemy;
@@ -127,15 +127,15 @@ void Player::Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets
 	      if(Health != 5)
 		Health += 1;
 	      continue;
-	    } 
-	  /*
-	    else if(Platforms[i]->Picture == "bild/levelComplete.png") //måste skicka med dessa bools i funktionen.
+	    }	  
+	  else if(Platforms[i]->Picture == "bild/Exit_Game.jpg") //måste skicka med dessa bools i funktionen.
 	    {
-	    quit = false;
-	    Game = false;
-	    Start_Menu = true;
-	    }
-	  */
+	      quit = false;
+	      Game = false;
+	      Start_Menu = true;
+	      Mix_PlayChannel(-1, Enemy_Dies, 0);
+	      break;
+	    }	  
 	  else
 	    yVel = 0;
 	      

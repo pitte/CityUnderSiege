@@ -473,7 +473,7 @@ int main(int argc, char* args[])
 	  
 	  BulletHit(Platforms, Bullets, player.x, screen_width, screen_height);
 	  player.Handle_Player(screen_width, screen_height, bgX, bgY, background);
-	  player.Move(Platforms, Bullets, Player_Hurt, Player_Jumps_Enemy, Enemy_Dies);
+	  player.Move(Platforms, Bullets, Player_Hurt, Player_Jumps_Enemy, Enemy_Dies, quit, Game, Start_Menu);
 
 	  if(player.NoHurt == true)
 	    {

@@ -28,7 +28,7 @@ class Player : public MovingObject
   void SetCamera(int screen_width, int screen_height, int& bgX, int& bgY, SDL_Surface*& background);     
   void Handle_Input(SDL_Event event, Mix_Chunk* Player_Shoot, Mix_Chunk* Player_Jump);
   void Handle_Player(int screen_width, int screen_height, int& bgX, int& bgY, SDL_Surface*& background );
-  void Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, Mix_Chunk* Player_Hurt, Mix_Chunk* Player_Jump, Mix_Chunk* Enemy_Dies);
+  void Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, Mix_Chunk* Player_Hurt, Mix_Chunk* Player_Jump, Mix_Chunk* Enemy_Dies, bool& quit, bool& Game, bool& Start_Menu);
   int Shooting();
   void DisplayHealth(SDL_Surface* screen);
   void DisplayAmmo(SDL_Surface* screen);
