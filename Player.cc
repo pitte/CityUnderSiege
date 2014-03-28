@@ -327,13 +327,14 @@ void Player::Handle_Player(int screen_width, int screen_height, int& bgX, int& b
   SetCamera(screen_width, screen_height, bgX, bgY, background);      
     if(LeftKey && !RightKey)
       {
-	if(xVel > MoveSpeed*-1)
-	  xVel --;
-
+	if(xVel > MoveSpeed*-1)	  
+	  xVel --;	
+	
 	Animations = 2; 
-
-	if(NoHurt)
+	
+	if(NoHurt)	  
 	  Animations = 4;  
+	
       }
     else if(RightKey && !LeftKey)
       {
@@ -405,6 +406,7 @@ void Player::DisplayHealth(SDL_Surface* screen)
   offset.x = 5;
   offset.y = 5;  
  
+  //Print.
   for(int i = 0; i < Health_; i++)
     {
       SDL_BlitSurface(HeartPic, NULL, screen, &offset);
@@ -419,6 +421,7 @@ void Player::DisplayAmmo(SDL_Surface* screen)
   offset.x = 1004;
   offset.y = 5;
   
+  //Print.
   for(int i = 0; i < Ammo; i++)
     {
       SDL_BlitSurface(BulletPic, NULL, screen, &offset);
