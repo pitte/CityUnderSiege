@@ -127,10 +127,12 @@ void Tower_Shoot(float StartX, float StartY, float TargetX, float TargetY, float
 
 void BulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, int playerx, int screen_width, int screen_height)
 {
-  for(int b = 0; b < Bullets.size(); b++) //Check all bullets.
+  //Check all bullets.
+  for(int b = 0; b < Bullets.size(); b++) 
     {
       MovingObject* bullet = dynamic_cast<MovingObject*>(Bullets[b]);
-      for(int p = 0; p < Platforms.size(); p++) //Check collision with all objects except bullets.
+      //Check collision with all objects except bullets.
+      for(int p = 0; p < Platforms.size(); p++) 
 	{
 	  Enemy* enemy;
 	  Enemy_Tower* enemy_tower;
@@ -142,19 +144,23 @@ void BulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, i
 	      
 	      if(bullet->Collision(Platforms[p]) && enemy_tower == 0)
 		{
-		  if( Bullets.at(b) != NULL ) //Remove bullet.
+		  //Remove bullet.
+		  if( Bullets.at(b) != NULL ) 
 		    {
 		      delete Bullets.at(b);
 		      Bullets.at(b) = NULL;
 		      Bullets.erase(Bullets.begin()+b);
 		    }
-		  if(enemy != 0 && enemy->Health != 0) //Enemy hit but not dead.
+		  //Enemy hit but not dead.
+		  if(enemy != 0 && enemy->Health != 0) 
 		    {
 		      enemy->Health -= 1;
 		    }
-		  else if(enemy != 0 && enemy->Health == 0) //Killed enemy.
+		  //Killed enemy.
+		  else if(enemy != 0 && enemy->Health == 0) 
 		    {
-		      if( Platforms.at(p) != NULL ) //Remove enemy so that it is not blitted on screen.
+		      //Remove enemy so that it is not blitted on screen.
+		      if( Platforms.at(p) != NULL ) 
 			{
 			  delete Platforms.at(p);
 			  Platforms.at(p) = NULL;
@@ -245,9 +251,11 @@ int main(int argc, char* args[])
       return 1;
     }
 
-  while( quit == false ) //Main game loop.
+  //Main game loop.
+  while( quit == false ) 
     {
-      while(Start_Menu == true) //Start menu loop.
+      //Start menu loop.
+      while(Start_Menu == true) 
 	{
 	  Mix_HaltMusic();
 	  if(Start_Game_Menu(quit, Game, Start_Menu, Load_Level, Select_Level, screen, event, level, player, Start_Menu_Position, 
@@ -264,14 +272,16 @@ int main(int argc, char* args[])
 		}
 	    }
 	}
-      while (player.Paus_Menu == true) //Paus menu loop.
+      //Paus menu loop.
+      while (player.Paus_Menu == true) 
 	{
 	  if( Paus_Menu_F(Start_Menu, Game, quit, player.Paus_Menu, screen, event, Paus_Menu_Position, Paus_Menu_V) == 1) 
 	    {
 	      return 1;	  
 	    }
 	}
-      while (player.Game_Over == true) //Game over screen loop.
+      //Game over screen loop.
+      while (player.Game_Over == true) 
 	{
 	  Mix_HaltMusic();
 	  if( Game_Over_Menu(Load_Level, quit, Game, Start_Menu, player.Paus_Menu, player.Game_Over, screen, event, screen_height, 
@@ -287,10 +297,12 @@ int main(int argc, char* args[])
 	  background = IMG_Load( BackgroundName.c_str() );
 	  Load_Sound(level, music, Player_Shoot, Player_Jump, Player_Hurt, Player_Jumps_Enemy, Enemy_Dies, Game_Over);
 	}
-      if (Game == true) //Active game loop.
+      //Active game loop.
+      if (Game == true) 
 	{
 	  fps.start();
-	  while( SDL_PollEvent( &event ) ) //Key pressed, handle the input.
+	  //Key pressed, handle the input.
+	  while( SDL_PollEvent( &event ) ) 
 	    {
 	      player.Handle_Input(event, Player_Shoot, Player_Jump);
 	      if( event.type == SDL_QUIT ) 
@@ -299,14 +311,16 @@ int main(int argc, char* args[])
 		  Game = false;
 		}
 	    }
-	  if(Mix_PlayingMusic() == 0) //Start music.
+	  //Start music.
+	  if(Mix_PlayingMusic() == 0) 
 	    {
 	    if( Mix_PlayMusic(music, -1) == -1 )
 		{
 		  return 1;
 		}
 	    }
-	  if(player.Shoot && player.Ammo != 0) //Player shoots. If he has ammo spawn bullet.
+	  //Player shoots. If he has ammo spawn bullet.
+	  if(player.Shoot && player.Ammo != 0) 
 	    {
 	      int speed = player.Shooting();
 	      if(speed > 0)
@@ -322,7 +336,8 @@ int main(int argc, char* args[])
 	      player.Shoot = false;
 	      player.Ammo -= 1;
 	    }	  
-	  if(Bullets.size() != 0) //Handle movement of all bullets.
+	  //Handle movement of all bullets.
+	  if(Bullets.size() != 0) 
 	    {
 	      for(int i = 0; i < Bullets.size(); i++)
 		{
@@ -331,12 +346,14 @@ int main(int argc, char* args[])
 		}
 	    }
 	  
-	  if(player.Health == 0) //Player dies.
+	  //Player dies.
+	  if(player.Health == 0) 
 	    {
 	      player.yVel -= 50;
 	    }
 	  
-	  for(int i = 0; i < Platforms.size(); ++i) //Handle AI for all enemies and platforms.
+	  //Handle AI for all enemies and platforms.
+	  for(int i = 0; i < Platforms.size(); ++i) 
 	    {
 	      mp = dynamic_cast<MovingPlatform*>(Platforms[i]);
 	      enemy = dynamic_cast<Enemy*>(Platforms[i]);
@@ -392,9 +409,12 @@ int main(int argc, char* args[])
 		}
 	    }
 	  
-	  BulletHit(Platforms, Bullets, player.x, screen_width, screen_height); //Collision for bullets.
-	  player.Handle_Player(screen_width, screen_height, bgX, bgY, background); //Handle gravity, friction and animations for player.
-	  player.Move(Platforms, Bullets, Player_Hurt, Player_Jumps_Enemy, Enemy_Dies, quit, Game, Start_Menu); //Collision player-world.
+	  //Collision for bullets.
+	  BulletHit(Platforms, Bullets, player.x, screen_width, screen_height); 
+	  //Handle gravity, friction and animations for player.
+	  player.Handle_Player(screen_width, screen_height, bgX, bgY, background); 
+	  //Collision player-world.
+	  player.Move(Platforms, Bullets, Player_Hurt, Player_Jumps_Enemy, Enemy_Dies, quit, Game, Start_Menu); 
 
 	  //Player immortality-after-being-hurt-counter check.
 	  if(player.NoHurt == true)
