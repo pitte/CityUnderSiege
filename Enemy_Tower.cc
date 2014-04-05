@@ -15,30 +15,29 @@ void Enemy_Tower::AI_Tower()
 void Enemy_Tower::Tower_Shoot(float TargetX, float TargetY, float& xVel, 
 			      float& yVel)
 {
-  float narl, mots, hyp, grader;
+  float adjacent, opposite, hyp;
   float arctan;
 
-  narl = TargetX - x; //Adjacent side.
-  mots = TargetY - x; //Opposite side.
-  
-  arctan = atan(narl/mots); //Degrees.
+  adjacent = TargetX - x; //Adjacent side.
+  opposite = TargetY - x; //Opposite side.
+  arctan = atan(adjacent/opposite); //Degrees.
   
   xVel = sin(arctan);
   yVel = cos(arctan);
   
-  if(narl > 0 && mots > 0) {
+  if(adjacent > 0 && opposite > 0) {
       xVel = sin(arctan)*3;
       yVel = cos(arctan)*3;
     }
-  else if(narl > 0 && mots < 0) {
+  else if(adjacent > 0 && opposite < 0) {
       xVel = (-sin(arctan))*3;
       yVel = (-cos(arctan))*3;
     }
-  else if(narl < 0 && mots > 0) {
+  else if(adjacent < 0 && opposite > 0) {
       xVel = sin(arctan)*3;
       yVel = cos(arctan)*3;
     }
-  else if(narl < 0 && mots < 0) {
+  else if(adjacent < 0 && opposite < 0) {
       xVel = (-sin(arctan))*3;
       yVel = (-cos(arctan))*3;
     }
