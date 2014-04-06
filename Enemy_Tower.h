@@ -9,23 +9,23 @@
 class Enemy_Tower : public Enemy
 {
  public:
- Enemy_Tower(float x_, float y_, float Width_, float Height_, float MoveSpeed_, std::string Picture_, float Health_, 
-	     float To_, int Range_, int ShootDelay_, int Frames_ = 0, int Animations_ = 0)
-   : Enemy(x_, y_, Width_, Height_, MoveSpeed_, Picture_, Health_, To_, 
-	   Frames_, Animations_), Range(Range_), ShootDelay(ShootDelay_)
+ Enemy_Tower(float x_, float y_, float width_, float height_, float moveSpeed_, std::string picture_, float health_, 
+	     float to_, int range_, int shootDelay_, int frames_ = 0, int animations_ = 0)
+   : Enemy(x_, y_, width_, height_, moveSpeed_, picture_, health_, to_, 
+	   frames_, animations_), range(range_), shootDelay(shootDelay_)
   {
-    From = y_;
-    ShootCount = 0;
+    from = y_;
+    shootCount = 0;
   }
   
-  void AI_Tower();
-  void Tower_Shoot(float TargetX, float TargetY, float& xVel, float& yVel);
+  void aiTower();
+  void towerShoot(float targetX, float targetY, float& xVel, float& yVel);
 
-  bool TowerFire;
-  int ShootCount;
-  int Range;
-  int ShootDelay;
-  float From;
+  bool towerFire;
+  int shootCount;
+  int range;
+  int shootDelay;
+  float from;
 };
 
 #endif

@@ -1,25 +1,24 @@
 #include "Enemy_Tower.h"
 
-void Enemy_Tower::AI_Tower()
+void Enemy_Tower::aiTower()
 {
   //Movement in y-axis.
-  if(y > From)
-    MoveSpeed = MoveSpeed*-1;
-  if(y < To)
-    MoveSpeed = MoveSpeed*-1;
+  if(y > from)
+    moveSpeed = moveSpeed*-1;
+  if(y < to)
+    moveSpeed = moveSpeed*-1;
 
-  y -= MoveSpeed;
+  y -= moveSpeed;
 }
 
-
-void Enemy_Tower::Tower_Shoot(float TargetX, float TargetY, float& xVel, 
+void Enemy_Tower::towerShoot(float targetX, float targetY, float& xVel, 
 			      float& yVel)
 {
   float adjacent, opposite, hyp;
   float arctan;
 
-  adjacent = TargetX - x; //Adjacent side.
-  opposite = TargetY - x; //Opposite side.
+  adjacent = targetX - x; //Adjacent side.
+  opposite = targetY - x; //Opposite side.
   arctan = atan(adjacent/opposite); //Degrees.
   
   xVel = sin(arctan);

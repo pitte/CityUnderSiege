@@ -1,15 +1,15 @@
 #include "Enemy_Simple.h"
 
-void Enemy_Simple::AI_Simple()
+void Enemy_Simple::aiSimple()
 {
   //Walk From to To.
-  if (x < From)
-      MoveSpeed = MoveSpeed *-1;
-  if(x > To)
-      MoveSpeed = MoveSpeed *-1;
+  if (x < from)
+      moveSpeed = moveSpeed *-1;
+  if(x > to)
+      moveSpeed = moveSpeed *-1;
   
-  Animations = 1;
-  x += MoveSpeed;
+  animations = 1;
+  x += moveSpeed;
   
   //Jump.
   if(!inAir) {

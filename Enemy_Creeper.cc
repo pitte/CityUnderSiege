@@ -1,11 +1,10 @@
 #include "Enemy_Creeper.h"
 
-
-void Enemy_Creeper::AI_Creeper(float playerx)
+void Enemy_Creeper::aiCreeper(float playerX)
 {
-  if(x < playerx)
-      x += MoveSpeed;
+  if(x < playerX)
+      x += moveSpeed;
   
-  else if(x > playerx)
-      x -= MoveSpeed;
+  else if(x > playerX)
+      x -= moveSpeed;
 }

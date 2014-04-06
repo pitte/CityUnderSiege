@@ -2,21 +2,20 @@
 #define ENEMYSIMPLE_H
 #include "Enemy.h"
 
-
 class Enemy_Simple : public Enemy
 {
  public:
- Enemy_Simple(float x_, float y_, float Width_, float Height_, float MoveSpeed_, std::string Picture_, float Health_, 
-	      float To_, int Frames_ = 0, int Animations_ = 0, int GroundLevel_ = 566)
-   : Enemy(x_, y_, Width_, Height_, MoveSpeed_, Picture_, Health_, To_, Frames_, Animations_), GroundLevel(GroundLevel_) 
+ Enemy_Simple(float x_, float y_, float width_, float height_, float moveSpeed_, std::string picture_, float health_, 
+	      float to_, int frames_ = 0, int animations_ = 0, int groundLevel_ = 566)
+   : Enemy(x_, y_, width_, height_, moveSpeed_, picture_, health_, to_, frames_, animations_), groundLevel(groundLevel_) 
   {
-    From = x_;
+    from = x_;
   }
   
-  void AI_Simple();
+  void aiSimple();
   
-  float From;
-  int GroundLevel;
+  float from;
+  int groundLevel;
 };
 
 #endif

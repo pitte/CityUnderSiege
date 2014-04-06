@@ -1,16 +1,8 @@
+//SDL library.
 #include "SDL/SDL.h"
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_image.h"
-#include "Object.h"
-#include "MovingObject.h"
-#include "fps.h"
-#include "Player.h"
-#include "Enemy.h"
-#include "Enemy_Simple.h"
-#include "Enemy_Creeper.h"
-#include "Enemy_Tower.h"
-#include "Enemy_Tank.h"
-#include "MovingPlatform.h"
+//Standard includes.
 #include <string>
 #include <vector>
 #include <sstream>
@@ -20,25 +12,35 @@
 #include <valarray>
 #include <stdio.h>
 #include <math.h>
+//Our files.
+#include "Object.h"
+#include "Moving_Object.h"
+#include "fps.h"
+#include "Player.h"
+#include "Enemy.h"
+#include "Enemy_Simple.h"
+#include "Enemy_Creeper.h"
+#include "Enemy_Tower.h"
+#include "Moving_Platform.h"
 #include "Menu.cc"
-#include "Load_Level.cc"
-#include "Load_Sound.cc"
+#include "loadLevel.cc"
+#include "loadSound.cc"
 
-const int screen_width = 1024;
-const int screen_height = 768;
-const int screen_bpp = 32;
+const int screenWidth = 1024;
+const int screenHeight = 768;
+const int screenBpp = 32;
 const int FRAMES_PER_SECOND = 45;
 SDL_Surface *screen = NULL;
 SDL_Event event;
 Mix_Music* music = NULL;
-Mix_Chunk* Player_Shoot = NULL;
-Mix_Chunk* Player_Jump = NULL;
-Mix_Chunk* Player_Hurt = NULL;
-Mix_Chunk* Player_Jumps_Enemy = NULL;
-Mix_Chunk* Enemy_Dies = NULL;
-Mix_Chunk* Game_Over = NULL;
+Mix_Chunk* playerShoot = NULL;
+Mix_Chunk* playerJump = NULL;
+Mix_Chunk* playerHurt = NULL;
+Mix_Chunk* playerJumpsEnemy = NULL;
+Mix_Chunk* enemyDies = NULL;
+Mix_Chunk* gameOver = NULL;
 
-void handle_background( int x, int y, SDL_Surface* source, SDL_Surface* destination, float cameraY )
+void handleBackground( int x, int y, SDL_Surface* source, SDL_Surface* destination, float cameraY )
 {
   SDL_Rect offset;
   //Current background.
@@ -59,18 +61,18 @@ void handle_background( int x, int y, SDL_Surface* source, SDL_Surface* destinat
   SDL_BlitSurface( source, NULL, destination, &offset );
 }
 
-SDL_Surface *load_image(std::string filename)
+SDL_Surface *loadImage(std::string filename)
 {
-  SDL_Surface* loaded_image = NULL;
-  SDL_Surface* optimized_image = NULL;
-  loaded_image = IMG_Load(filename.c_str());
+  SDL_Surface* loadedImage = NULL;
+  SDL_Surface* optimizedImage = NULL;
+  loadedImage = IMG_Load(filename.c_str());
 
-  if(loaded_image != NULL)
+  if(loadedImage != NULL)
     {
-      optimized_image = SDL_DisplayFormat(loaded_image);
-      SDL_FreeSurface(loaded_image);
+      optimizedImage = SDL_DisplayFormat(loadedImage);
+      SDL_FreeSurface(loadedImage);
     }
-  return optimized_image;
+  return optimizedImage;
 }
 
 bool init()
@@ -83,7 +85,7 @@ bool init()
     {
       return false;
     }
-  screen = SDL_SetVideoMode( screen_width, screen_height, screen_bpp, SDL_SWSURFACE );
+  screen = SDL_SetVideoMode( screenWidth, screenHeight, screenBpp, SDL_SWSURFACE );
   if( screen == NULL )
     {
       return false;
@@ -93,56 +95,56 @@ bool init()
   return true;
 }
 
-void Tower_Shoot(float StartX, float StartY, float TargetX, float TargetY, float& xVel, float& yVel)
+void towerShoot(float startX, float startY, float targetX, float targetY, float& xVel, float& yVel)
 {
-  float narl, mots, hyp, grader;
+  float adjacent, opposite, hyp;
   float arctan;
-  narl = TargetX - StartX; //Adjacent side.
-  mots = TargetY - StartY; //Opposite side.  
-  arctan = atan(narl/mots); //Degrees.
+  adjacent = targetX - startX; //Adjacent side.
+  opposite = targetY - startY; //Opposite side.
+  arctan = atan(adjacent/opposite); //Degrees.
   xVel = sin(arctan);
   yVel = cos(arctan);
   
-  if(narl > 0 && mots > 0)
+  if(adjacent > 0 && opposite > 0)
     {
       xVel = sin(arctan)*3;
       yVel = cos(arctan)*3;
     }
-  else if(narl > 0 && mots < 0)
+  else if(adjacent > 0 && opposite < 0)
     {
       xVel = (-sin(arctan))*3;
       yVel = (-cos(arctan))*3;
     }
-  else if(narl < 0 && mots > 0)
+  else if(adjacent < 0 && opposite > 0)
     {
       xVel = sin(arctan)*3;
       yVel = cos(arctan)*3;
     }
-  else if(narl < 0 && mots < 0)
+  else if(adjacent < 0 && opposite < 0)
     {
       xVel = (-sin(arctan))*3;
       yVel = (-cos(arctan))*3;
     }
 }
 
-void BulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, int playerx, int screen_width, int screen_height)
+void bulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, int playerX, int screenWidth, int screenHeight)
 {
   //Check all bullets.
-  for(int b = 0; b < Bullets.size(); b++) 
+  for(int b = 0; b < Bullets.size(); b++)
     {
-      MovingObject* bullet = dynamic_cast<MovingObject*>(Bullets[b]);
+      Moving_Object* bullet = dynamic_cast<Moving_Object*>(Bullets[b]);
       //Check collision with all objects except bullets.
       for(int p = 0; p < Platforms.size(); p++) 
 	{
 	  Enemy* enemy;
-	  Enemy_Tower* enemy_tower;
+	  Enemy_Tower* enemyTower;
 	  
-	  if(bullet->Collision(Platforms[p]))
+	  if(bullet->collision(Platforms[p]))
 	    {
 	      enemy = dynamic_cast<Enemy*>(Platforms[p]);
-	      enemy_tower = dynamic_cast<Enemy_Tower*>(Platforms[p]);
+	      enemyTower = dynamic_cast<Enemy_Tower*>(Platforms[p]);
 	      
-	      if(bullet->Collision(Platforms[p]) && enemy_tower == 0)
+	      if(bullet->collision(Platforms[p]) && enemyTower == 0)
 		{
 		  //Remove bullet.
 		  if( Bullets.at(b) != NULL ) 
@@ -152,12 +154,12 @@ void BulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, i
 		      Bullets.erase(Bullets.begin()+b);
 		    }
 		  //Enemy hit but not dead.
-		  if(enemy != 0 && enemy->Health != 0) 
+		  if(enemy != 0 && enemy->health != 0) 
 		    {
-		      enemy->Health -= 1;
+		      enemy->health -= 1;
 		    }
 		  //Killed enemy.
-		  else if(enemy != 0 && enemy->Health == 0) 
+		  else if(enemy != 0 && enemy->health == 0) 
 		    {
 		      //Remove enemy so that it is not blitted on screen.
 		      if( Platforms.at(p) != NULL ) 
@@ -169,7 +171,7 @@ void BulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, i
 		    }
 		}
 	      //If shot outside screen +/- 774, remove it.
-	      else if(bullet->x > (playerx + 774) || bullet->x < (playerx - 774))
+	      else if(bullet->x > (playerX + 774) || bullet->x < (playerX - 774))
 		{
 		  if( Bullets.at(b) != NULL ) 
 		    {
@@ -185,64 +187,63 @@ void BulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, i
 
 int main(int argc, char* args[])
 {
-  int Start_Menu_Position = 0;
-  int Paus_Menu_Position = 0;
-  int Select_Level_Position = 0;
-  int Game_Over_Position = 0;
-  bool Paus_Menu = false;
-  bool Start_Menu = true;
-  bool Game = false;
+  int startMenuPosition = 0;
+  int pausMenuPosition = 0;
+  int selectLevelPosition = 0;
+  int gameOverPosition = 0;
+  bool pausMenu = false;
+  bool startMenu = true;
+  bool game = false;
   bool quit = false;
-  bool Load_Level = false;
-  bool Select_Level = false;
+  bool loadLevelB = false;
+  bool selectLevel = false;
   std::string level;
-  int NoHurtCounter = 0;
-  std::vector<Object*> Start_Menu_V;
-  Start_Menu_V.push_back(new Object(95, 0, 180, 800, "bild/New_Game.jpg")); //0
-  Start_Menu_V.push_back(new Object(120, 0, 180, 800, "bild/New_Game_Markerad.jpg")); 
-  Start_Menu_V.push_back(new Object(95, 220, 180, 800, "bild/Select_Level.jpg")); //4
-  Start_Menu_V.push_back(new Object(115, 220, 180, 800, "bild/Select_Level_Markerad.jpg"));
-  Start_Menu_V.push_back(new Object(95, 440, 180, 800, "bild/Exit_Game.jpg")); //6
-  Start_Menu_V.push_back(new Object(120, 440, 180, 800, "bild/Exit_Game_Markerad.jpg"));
-  std::vector<Object*> Paus_Menu_V;  
-  Paus_Menu_V.push_back(new Object(100, 0, 180, 800, "bild/Resume_Game.jpg") );
-  Paus_Menu_V.push_back(new Object(120, 0, 180, 800, "bild/Resume_Game_Markerad.jpg") );
-  Paus_Menu_V.push_back(new Object(100, 180, 180, 800, "bild/Exit_Game.jpg") );
-  Paus_Menu_V.push_back(new Object(120, 180, 180, 800, "bild/Exit_Game_Markerad.jpg") );
-  std::vector<Object*> Game_Over_V;
-  Game_Over_V.push_back(new Object(5, 200, 180, 1300, "bild/Restart.png") );
-  Game_Over_V.push_back(new Object(50, 200, 180, 1300, "bild/Restart_Markerad.png") );
-  Game_Over_V.push_back(new Object(5, 380, 180, 800, "bild/Main_Menu.png") );
-  Game_Over_V.push_back(new Object(50, 380, 180, 800, "bild/Main_Menu_markerad.png") );
-  Game_Over_V.push_back(new Object(0, 0, screen_height, screen_width, "bild/Game_Over.jpg") );
-  std::vector<Object*> Select_Level_V;
-  Select_Level_V.push_back(new Object(5, 200, 180, 1300, "bild/Level1.png") );
-  Select_Level_V.push_back(new Object(25, 200, 180, 1300, "bild/Level1_markerad.png") );
-  Select_Level_V.push_back(new Object(5, 350, 180, 800, "bild/Level2.png") );
-  Select_Level_V.push_back(new Object(25, 350, 180, 800, "bild/Level2_markerad.png") );
-  Select_Level_V.push_back(new Object(5, 500, 180, 800, "bild/Back.png") );
-  Select_Level_V.push_back(new Object(25, 500, 180, 800, "bild/Back_markerad.png") );
-  Player player(4700, 650, 40, 79, 8, "bild/PlayerAnimations.png", 5, 3, 7);
-  player.Width = 35;
+  int noHurtCounter = 0;
+  std::vector<Object*> startMenuV;
+  startMenuV.push_back(new Object(95, 0, 180, 800, "Images/New_Game.jpg")); //0
+  startMenuV.push_back(new Object(120, 0, 180, 800, "Images/New_Game_Markerad.jpg")); 
+  startMenuV.push_back(new Object(95, 220, 180, 800, "Images/Select_Level.jpg")); //4
+  startMenuV.push_back(new Object(115, 220, 180, 800, "Images/Select_Level_Markerad.jpg"));
+  startMenuV.push_back(new Object(95, 440, 180, 800, "Images/Exit_Game.jpg")); //6
+  startMenuV.push_back(new Object(120, 440, 180, 800, "Images/Exit_Game_Markerad.jpg"));
+  std::vector<Object*> pausMenuV;  
+  pausMenuV.push_back(new Object(100, 0, 180, 800, "Images/Resume_Game.jpg") );
+  pausMenuV.push_back(new Object(120, 0, 180, 800, "Images/Resume_Game_Markerad.jpg") );
+  pausMenuV.push_back(new Object(100, 180, 180, 800, "Images/Exit_Game.jpg") );
+  pausMenuV.push_back(new Object(120, 180, 180, 800, "Images/Exit_Game_Markerad.jpg") );
+  std::vector<Object*> gameOverV;
+  gameOverV.push_back(new Object(5, 200, 180, 1300, "Images/Restart.png") );
+  gameOverV.push_back(new Object(50, 200, 180, 1300, "Images/Restart_Markerad.png") );
+  gameOverV.push_back(new Object(5, 380, 180, 800, "Images/Main_Menu.png") );
+  gameOverV.push_back(new Object(50, 380, 180, 800, "Images/Main_Menu_markerad.png") );
+  gameOverV.push_back(new Object(0, 0, screenHeight, screenWidth, "Images/Game_Over.jpg") );
+  std::vector<Object*> selectLevelV;
+  selectLevelV.push_back(new Object(5, 200, 180, 1300, "Images/Level1.png") );
+  selectLevelV.push_back(new Object(25, 200, 180, 1300, "Images/Level1_markerad.png") );
+  selectLevelV.push_back(new Object(5, 350, 180, 800, "Images/Level2.png") );
+  selectLevelV.push_back(new Object(25, 350, 180, 800, "Images/Level2_markerad.png") );
+  selectLevelV.push_back(new Object(5, 500, 180, 800, "Images/Back.png") );
+  selectLevelV.push_back(new Object(25, 500, 180, 800, "Images/Back_markerad.png") );
+  Player player(4700, 650, 40, 79, 8, "Images/PlayerAnimations.png", 5, 3, 7);
+  player.width = 35;
   Timer fps;
-  MovingPlatform* mp;
-  Object* checkpic;
+  Moving_Platform* mp;
+  Object* checkPic;
   Enemy* enemy;
-  Enemy_Simple* enemy_simple;
-  Enemy_Creeper* enemy_creeper;
-  Enemy_Tower* enemy_tower;
-  Enemy_Tank* enemy_tank;
-  MovingObject* bullet1;
-  MovingObject* bullet2;
-  MovingObject* bulletloop;
-  Object* Leverpointer;
-  Object* Blockpointer;
+  Enemy_Simple* enemySimple;
+  Enemy_Creeper* enemyCreeper;
+  Enemy_Tower* enemyTower;
+  Moving_Object* bullet1;
+  Moving_Object* bullet2;
+  Moving_Object* bulletLoop;
+  Object* leverPointer;
+  Object* blockPointer;
   bool launched = false;
-  bool Created = false, Created2 = false, Created3 = false;
-  bool Created4 = false, Created5 = false;
-  int ShootCount = 0;
+  bool created = false, created2 = false, created3 = false;
+  bool created4 = false, created5 = false;
+  int shootCount = 0;
   std::vector<Object*> Platforms, Bullets;
-  std::string BackgroundName;
+  std::string backgroundName;
   SDL_Surface *background = NULL;
   int bgX = 0, bgY = 0;
 
@@ -255,60 +256,60 @@ int main(int argc, char* args[])
   while( quit == false ) 
     {
       //Start menu loop.
-      while(Start_Menu == true) 
+      while(startMenu == true) 
 	{
 	  Mix_HaltMusic();
-	  if(Start_Game_Menu(quit, Game, Start_Menu, Load_Level, Select_Level, screen, event, level, player, Start_Menu_Position, 
-			     Start_Menu_V) == 1) 
+	  if(startGameMenu(quit, game, startMenu, loadLevelB, selectLevel, screen, event, level, player, startMenuPosition, 
+			     startMenuV) == 1) 
 	    {
 	      return 1;    
 	    }
-	  while(Select_Level == true)
+	  while(selectLevel == true)
 	    {    
-	      if(Select_Level_Menu(Select_Level, Load_Level, Start_Menu, quit, Game, player.Game_Over, screen, event, level, 
-				   Select_Level_Position, Select_Level_V, player) == 1)
+	      if(selectLevelMenu(selectLevel, loadLevelB, startMenu, quit, game, player.gameOver, screen, event, level, 
+			 selectLevelPosition, selectLevelV, player) == 1)
 		{
 		  return 1;	      
 		}
 	    }
 	}
       //Paus menu loop.
-      while (player.Paus_Menu == true) 
+      while (player.pausMenu == true) 
 	{
-	  if( Paus_Menu_F(Start_Menu, Game, quit, player.Paus_Menu, screen, event, Paus_Menu_Position, Paus_Menu_V) == 1) 
+	  if( pausMenuF(startMenu, game, quit, player.pausMenu, screen, event, pausMenuPosition, pausMenuV) == 1) 
 	    {
 	      return 1;	  
 	    }
 	}
       //Game over screen loop.
-      while (player.Game_Over == true) 
+      while (player.gameOver == true) 
 	{
 	  Mix_HaltMusic();
-	  if( Game_Over_Menu(Load_Level, quit, Game, Start_Menu, player.Paus_Menu, player.Game_Over, screen, event, screen_height, 
-			     screen_width, Game_Over_Position, Game_Over_V, level, player) == 1) 
+	  if( gameOverMenu(loadLevelB, quit, game, startMenu, player.pausMenu, player.gameOver, screen, event, screenHeight, 
+			     screenWidth, gameOverPosition, gameOverV, level, player) == 1) 
 	    {
 	      return 1; 	  
 	    }
 	}
-      if (Load_Level == true)
+      if (loadLevelB == true)
 	{
-	  Load_Level = false;
-	  load_level(Platforms, level, BackgroundName, player, Bullets);
-	  background = IMG_Load( BackgroundName.c_str() );
-	  Load_Sound(level, music, Player_Shoot, Player_Jump, Player_Hurt, Player_Jumps_Enemy, Enemy_Dies, Game_Over);
+	  loadLevelB = false;
+	  loadLevel(Platforms, level, backgroundName, player, Bullets);
+	  background = IMG_Load( backgroundName.c_str() );
+	  loadSound(level, music, playerShoot, playerJump, playerHurt, playerJumpsEnemy, enemyDies, gameOver);
 	}
       //Active game loop.
-      if (Game == true) 
+      if (game == true) 
 	{
 	  fps.start();
 	  //Key pressed, handle the input.
 	  while( SDL_PollEvent( &event ) ) 
 	    {
-	      player.Handle_Input(event, Player_Shoot, Player_Jump);
+	      player.handleInput(event, playerShoot, playerJump);
 	      if( event.type == SDL_QUIT ) 
 		{
 		  quit = true;
-		  Game = false;
+		  game = false;
 		}
 	    }
 	  //Start music.
@@ -320,34 +321,34 @@ int main(int argc, char* args[])
 		}
 	    }
 	  //Player shoots. If he has ammo spawn bullet.
-	  if(player.Shoot && player.Ammo != 0) 
+	  if(player.shoot && player.ammo != 0) 
 	    {
-	      int speed = player.Shooting();
+	      int speed = player.shooting();
 	      if(speed > 0)
 		{
-		  bullet1 = new MovingObject(player.x+20, player.y+39, 8, 4, speed, "bild/bulletright.png");
+		  bullet1 = new Moving_Object(player.x+20, player.y+39, 8, 4, speed, "Images/bulletright.png");
 		}
 	      if(speed < 0)
 		{
-		  bullet1 = new MovingObject(player.x, player.y+39, 8, 4, speed, "bild/bulletleft.png");
+		  bullet1 = new Moving_Object(player.x, player.y+39, 8, 4, speed, "Images/bulletleft.png");
 		}
 	  
 	      Bullets.push_back(bullet1);
-	      player.Shoot = false;
-	      player.Ammo -= 1;
+	      player.shoot = false;
+	      player.ammo -= 1;
 	    }	  
 	  //Handle movement of all bullets.
 	  if(Bullets.size() != 0) 
 	    {
 	      for(int i = 0; i < Bullets.size(); i++)
 		{
-		  bulletloop = dynamic_cast<MovingObject*>(Bullets[i]);
-		  bulletloop->BulletMovement();
+		  bulletLoop = dynamic_cast<Moving_Object*>(Bullets[i]);
+		  bulletLoop->bulletMovement();
 		}
 	    }
 	  
 	  //Player dies.
-	  if(player.Health == 0) 
+	  if(player.health == 0) 
 	    {
 	      player.yVel -= 50;
 	    }
@@ -355,75 +356,75 @@ int main(int argc, char* args[])
 	  //Handle AI for all enemies and platforms.
 	  for(int i = 0; i < Platforms.size(); ++i) 
 	    {
-	      mp = dynamic_cast<MovingPlatform*>(Platforms[i]);
+	      mp = dynamic_cast<Moving_Platform*>(Platforms[i]);
 	      enemy = dynamic_cast<Enemy*>(Platforms[i]);
-	      enemy_simple = dynamic_cast<Enemy_Simple*>(Platforms[i]);
-	      enemy_creeper = dynamic_cast<Enemy_Creeper*>(Platforms[i]);
-	      enemy_tower = dynamic_cast<Enemy_Tower*>(Platforms[i]);
+	      enemySimple = dynamic_cast<Enemy_Simple*>(Platforms[i]);
+	      enemyCreeper = dynamic_cast<Enemy_Creeper*>(Platforms[i]);
+	      enemyTower = dynamic_cast<Enemy_Tower*>(Platforms[i]);
 	      
 	      if(mp!=0)
 		{
-		  mp->Elevate();
+		  mp->elevate();
 		}
-	      else if(enemy_simple != 0)
+	      else if(enemySimple != 0)
 		{
-		  if(enemy_simple->y > enemy_simple->GroundLevel) 
+		  if(enemySimple->y > enemySimple->groundLevel) 
 		    {
-		      enemy_simple->inAir = false;
+		      enemySimple->inAir = false;
 		    }		  
-		  enemy_simple->AI_Simple();
-		  enemy_simple->Gravity();
+		  enemySimple->aiSimple();
+		  enemySimple->gravity();
 		}
-	      else if(enemy_creeper != 0)
+	      else if(enemyCreeper != 0)
 		{
-		  if(player.x > enemy_creeper->x - enemy_creeper->Range && player.x < enemy_creeper->x + enemy_creeper->Range)
+		  if(player.x > enemyCreeper->x - enemyCreeper->range && player.x < enemyCreeper->x + enemyCreeper->range)
 		    {
-		      enemy_creeper->AI_Creeper(player.x);
+		      enemyCreeper->aiCreeper(player.x);
 		    }
 		}
-	      else if(enemy_tower != 0)
+	      else if(enemyTower != 0)
 		{
-		  enemy_tower->AI_Tower();
+		  enemyTower->aiTower();
 
-		  if((enemy_tower->x - enemy_tower->Range) < player.x && 
-		     (enemy_tower->x + enemy_tower->Range) > player.x && 
-		     (enemy_tower->y - enemy_tower->Range) < player.y && 
-		     (enemy_tower->y + enemy_tower->Range) > player.y)
+		  if((enemyTower->x - enemyTower->range) < player.x && 
+		     (enemyTower->x + enemyTower->range) > player.x && 
+		     (enemyTower->y - enemyTower->range) < player.y && 
+		     (enemyTower->y + enemyTower->range) > player.y)
 		    {		  
-		      enemy_tower->ShootCount += 1;
-		      if(enemy_tower->ShootCount > enemy_tower->ShootDelay)
+		      enemyTower->shootCount += 1;
+		      if(enemyTower->shootCount > enemyTower->shootDelay)
 			{
-			  bullet2 = new MovingObject(enemy_tower->x+enemy_tower->Width/2-5, 
-						     enemy_tower->y+enemy_tower->Height/2, 
-						     10, 10, 0, "bild/laser.png");
-			  Tower_Shoot(enemy_tower->x, enemy_tower->y, player.x, player.y, 
+			  bullet2 = new Moving_Object(enemyTower->x+enemyTower->width/2-5, 
+						     enemyTower->y+enemyTower->height/2, 
+						     10, 10, 0, "Images/laser.png");
+			  towerShoot(enemyTower->x, enemyTower->y, player.x, player.y, 
 				      bullet2->xVel, bullet2->yVel);
 			  Bullets.push_back(bullet2);
-			  enemy_tower->ShootCount = 0;
+			  enemyTower->shootCount = 0;
 			}
 		    }
 		}
-	      if(enemy != 0 && enemy_simple == 0)
+	      if(enemy != 0 && enemySimple == 0)
 		{
-		  enemy->EnemyMove(Platforms);
+		  enemy->enemyMove(Platforms);
 		}
 	    }
 	  
 	  //Collision for bullets.
-	  BulletHit(Platforms, Bullets, player.x, screen_width, screen_height); 
+	  bulletHit(Platforms, Bullets, player.x, screenWidth, screenHeight); 
 	  //Handle gravity, friction and animations for player.
-	  player.Handle_Player(screen_width, screen_height, bgX, bgY, background); 
+	  player.handlePlayer(screenWidth, screenHeight, bgX, bgY, background); 
 	  //Collision player-world.
-	  player.Move(Platforms, Bullets, Player_Hurt, Player_Jumps_Enemy, Enemy_Dies, quit, Game, Start_Menu); 
+	  player.move(Platforms, Bullets, playerHurt, playerJumpsEnemy, enemyDies, quit, game, startMenu); 
 
 	  //Player immortality-after-being-hurt-counter check.
-	  if(player.NoHurt == true)
+	  if(player.noHurt == true)
 	    {
-	      NoHurtCounter += 1;
-	      if(NoHurtCounter >= 50)
+	      noHurtCounter += 1;
+	      if(noHurtCounter >= 50)
 	      {
-		player.NoHurt = false;
-		NoHurtCounter = 0;
+		player.noHurt = false;
+		noHurtCounter = 0;
 	      }
 	    }
 
@@ -436,18 +437,18 @@ int main(int argc, char* args[])
 	    {
 	      SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x79, 0xC9, 0xFA ) );	 
 	    }
-	  handle_background(bgX, bgY, background, screen, player.CameraY);
+	  handleBackground(bgX, bgY, background, screen, player.cameraY);
 	  for(int i = 0; i < Bullets.size(); i++)
 	    {
-	      Bullets[i]->Show(screen, player.CameraX, player.CameraY);
+	      Bullets[i]->show(screen, player.cameraX, player.cameraY);
 	    }
-	  player.Show(screen, player.CameraX, player.CameraY);      
+	  player.show(screen, player.cameraX, player.cameraY);      
 	  for (int i = 0; i < Platforms.size(); i++)
 	    {
-	      Platforms[i]->Show(screen, player.CameraX, player.CameraY);
+	      Platforms[i]->show(screen, player.cameraX, player.cameraY);
 	    }      	  
-      	  player.DisplayHealth(screen);
-	  player.DisplayAmmo(screen);	  
+      	  player.displayHealth(screen);
+	  player.displayAmmo(screen);	  
 	  if(SDL_Flip(screen) == -1)
 	    {
 	      return 1;
@@ -458,22 +459,22 @@ int main(int argc, char* args[])
 	    }
 	  
 	  //Check if it is game over.
-	  if (player.Health == 0)
+	  if (player.health == 0)
 	    {
-	      player.Game_Over = true;
-	      Game = false;
+	      player.gameOver = true;
+	      game = false;
 	    }
 	}
     }
   
   //Exit program.
   SDL_FreeSurface(background);
-  Mix_FreeChunk(Player_Shoot);
-  Mix_FreeChunk(Player_Jump);
-  Mix_FreeChunk(Player_Hurt);
-  Mix_FreeChunk(Player_Jumps_Enemy);
-  Mix_FreeChunk(Enemy_Dies);
-  Mix_FreeChunk(Game_Over);
+  Mix_FreeChunk(playerShoot);
+  Mix_FreeChunk(playerJump);
+  Mix_FreeChunk(playerHurt);
+  Mix_FreeChunk(playerJumpsEnemy);
+  Mix_FreeChunk(enemyDies);
+  Mix_FreeChunk(gameOver);
   Mix_FreeMusic(music);
   Mix_CloseAudio();
 

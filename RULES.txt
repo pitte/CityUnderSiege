@@ -1,0 +1,9 @@
+följ SDL standard för syntaxstil
+funktioner: a_function();
+class: This_Class
+variabler: 
+
+coffas syntax:
+funktion: hejHopp()
+klass: HejHopp()
+variabel: hejHopp

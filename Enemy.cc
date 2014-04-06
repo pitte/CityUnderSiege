@@ -1,16 +1,15 @@
 #include "Enemy.h"
 
-
-void Enemy::EnemyMove(std::vector<Object*> Platforms)
+void Enemy::enemyMove(std::vector<Object*> Platforms)
 {
   for(int i = 0; i < Platforms.size(); i++) {
-      Object* checkpic = dynamic_cast<Object*>(Platforms[i]);
-      if(checkpic->Picture != "bild/enemysimple.jpg") {
-	  if(Collision(Platforms[i])) {
+      Object* checkPic = dynamic_cast<Object*>(Platforms[i]);
+      if(checkPic->picture != "Images/enemysimple.jpg") {
+	  if(collision(Platforms[i])) {
 	      if(x < Platforms[i]->x)
-		x = Platforms[i]->x - Width;
+		x = Platforms[i]->x - width;
 	      if(x > Platforms[i]->x)
-		x = Platforms[i]->x + Platforms[i]->Width;
+		x = Platforms[i]->x + Platforms[i]->width;
 	    }
 	}
     }

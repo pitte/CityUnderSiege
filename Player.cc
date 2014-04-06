@@ -1,11 +1,11 @@
-#include "MovingPlatform.h"
-#include "MovingObject.h"
-#include "Object.h"
 #include "Enemy.h"
 #include "Enemy_Creeper.h"
+#include "Moving_Object.h"
+#include "Moving_Platform.h"
+#include "Object.h"
 #include "Player.h"
 
-void Player::Handle_Input(SDL_Event event, Mix_Chunk* Player_Shoot, Mix_Chunk* Player_Jump)
+void Player::handleInput(SDL_Event event, Mix_Chunk* playerShoot, Mix_Chunk* playerJump)
 {
   if(event.type == SDL_KEYDOWN)
     {
@@ -15,18 +15,18 @@ void Player::Handle_Input(SDL_Event event, Mix_Chunk* Player_Shoot, Mix_Chunk* P
 	  if(!inAir)
 	    {
 	      yVel -= 20; inAir = true;
-	      Mix_PlayChannel(-1, Player_Jump, 0);
+	      Mix_PlayChannel(-1, playerJump, 0);
 	    }
 	  break;
-	case SDLK_LEFT: LeftKey = true; PrevLeft = true; PrevRight = false;
+	case SDLK_LEFT: leftKey = true; prevLeft = true; prevRight = false;
 	  break; 
-	case SDLK_RIGHT: RightKey = true; PrevLeft = false; PrevRight = true;
+	case SDLK_RIGHT: rightKey = true; prevLeft = false; prevRight = true;
 	  break;
-	case SDLK_LCTRL: Shoot = true;
-	  if(Ammo != 0)
-	    Mix_PlayChannel(-1, Player_Shoot, 0);
+	case SDLK_LCTRL: shoot = true;
+	  if(ammo != 0)
+	    Mix_PlayChannel(-1, playerShoot, 0);
 	  break;
-	case SDLK_LALT: Use = true;
+	case SDLK_LALT: use = true;
 	  break;	  
 	default: break;
 	}
@@ -36,45 +36,45 @@ void Player::Handle_Input(SDL_Event event, Mix_Chunk* Player_Shoot, Mix_Chunk* P
       switch(event.key.keysym.sym)
 	{	  
 	case SDLK_LEFT:
-	  LeftKey = false;  
+	  leftKey = false;  
           break;       
 	case SDLK_RIGHT:
-          RightKey = false;
+          rightKey = false;
           break;	  
 	case SDLK_LCTRL:
-	  Shoot = false;
+	  shoot = false;
 	  break;	  
 	case SDLK_LALT:
-	  Use = false;
+	  use = false;
 	  break;	  
 	case SDLK_ESCAPE:
-	  Paus_Menu = !Paus_Menu;
+	  pausMenu = !pausMenu;
 	  break;	  
 	default: break;
 	}
     }
 }
 
-void Player::Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, Mix_Chunk* Player_Hurt,  Mix_Chunk* Player_Jumps_Enemy, Mix_Chunk* Enemy_Dies, bool& quit, bool& Game, bool& Start_Menu)
+void Player::move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, Mix_Chunk* playerHurt,  Mix_Chunk* playerJumpsEnemy, Mix_Chunk* enemyDies, bool& quit, bool& game, bool& startMenu)
 {
-  MovingPlatform* mp;
+  Moving_Platform* mp;
   Enemy* enemy;
-  MovingObject* bullet;
-  Object* bulletobject;
-  bool IsMovingPlatform = false;
+  Moving_Object* bullet;
+  Object* bulletObject;
+  bool isMovingPlatform = false;
   bool disappear = false;
   
   for(int b = 0; b < Bullets.size(); b++)
     {
-      bulletobject = dynamic_cast<Object*>(Bullets[b]);
-      if(Collision(Bullets[b]) && bulletobject->Picture == "bild/laser.png")
+      bulletObject = dynamic_cast<Object*>(Bullets[b]);
+      if(collision(Bullets[b]) && bulletObject->picture == "Images/laser.png")
 	{
-	  if(!NoHurt)
+	  if(!noHurt)
 	    { 
-	      Health -= 1;
-	      Mix_PlayChannel(-1, Player_Hurt, 0);
+	      health -= 1;
+	      Mix_PlayChannel(-1, playerHurt, 0);
 	    }
-	  NoHurt = true;
+	  noHurt = true;
 	  if( Bullets.at(b) != NULL ) 
 	    {
 	      delete Bullets.at(b);
@@ -86,20 +86,20 @@ void Player::Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets
 
   for (int i = 0; i < Platforms.size(); ++i)
     { 
-      mp = dynamic_cast<MovingPlatform*>(Platforms[i]);
+      mp = dynamic_cast<Moving_Platform*>(Platforms[i]);
       enemy = dynamic_cast<Enemy*>(Platforms[i]);
       
       if( mp != 0)
 	{
-	  IsMovingPlatform = true;
+	  isMovingPlatform = true;
 	}
       
-      if( Collision(Platforms[i]) )
+      if( collision(Platforms[i]) )
 	{
 	  float yTemp = yVel;
 	  float xTemp = xVel;
 	  
-	  if(Platforms[i]->Picture == "bild/weaponcrate.png")
+	  if(Platforms[i]->picture == "Images/weaponcrate.png")
 	    {
 	      if( Platforms.at(i) != NULL )
 		{
@@ -108,15 +108,15 @@ void Player::Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets
 		  Platforms.erase(Platforms.begin()+i);
 		}
 
-	      int ammonum = 5;
-	      while(ammonum != 0 && Ammo != 20)
+	      int ammoNum = 5;
+	      while(ammoNum != 0 && ammo != 20)
 		{
-		  Ammo++;
-		  ammonum--;
+		  ammo++;
+		  ammoNum--;
 		}
 	      continue; 
 	    }
-	  else if(Platforms[i]->Picture == "bild/healthcrate.png")
+	  else if(Platforms[i]->picture == "Images/healthcrate.png")
 	    {
 	      if( Platforms.at(i) != NULL )
 		{
@@ -124,50 +124,50 @@ void Player::Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets
 		  Platforms.at(i) = NULL;
 		  Platforms.erase(Platforms.begin()+i);
 		}
-	      if(Health != 5)
-		Health += 1;
+	      if(health != 5)
+		health += 1;
 	      continue;
 	    }	  
-	  else if(Platforms[i]->Picture == "bild/Exit_Game.jpg") //måste skicka med dessa bools i funktionen.
+	  else if(Platforms[i]->picture == "Images/Exit_Game.jpg")
 	    {
 	      quit = false;
-	      Game = false;
-	      Start_Menu = true;
-	      Mix_PlayChannel(-1, Enemy_Dies, 0);
+	      game = false;
+	      startMenu = true;
+	      Mix_PlayChannel(-1, enemyDies, 0);
 	      break;
 	    }	  
 	  else
 	    yVel = 0;
 	      
 	  //Collision X-axis.
-	  if(Collision(Platforms[i]))
+	  if(collision(Platforms[i]))
 	    {
 	      if(xVel == 0)
 		{
-		  if(IsMovingPlatform)
+		  if(isMovingPlatform)
 		    {
-		      if(mp->MoveSpeed > 0)
-			x = Platforms[i]->x + Platforms[i]->Width;
+		      if(mp->moveSpeed > 0)
+			x = Platforms[i]->x + Platforms[i]->width;
 		      else
-			x = Platforms[i]->x - Width;
+			x = Platforms[i]->x - width;
 		    }		  
 		  else if(enemy != 0)
 		    {
-		      if(!NoHurt)
+		      if(!noHurt)
 			{ 
-			  Health -= 1;
-			  Mix_PlayChannel(-1, Player_Hurt, 0);
+			  health -= 1;
+			  Mix_PlayChannel(-1, playerHurt, 0);
 			}
-		      NoHurt = true;
+		      noHurt = true;
 		      if(enemy->x < x)
 			{
-			  x = enemy->x + enemy->Width;
-			  xVel = (MoveSpeed+5);
+			  x = enemy->x + enemy->width;
+			  xVel = (moveSpeed+5);
 			}		      
 		      else
 			{
-			  x = enemy->x - Width;
-			  xVel = (MoveSpeed+5) * -1;
+			  x = enemy->x - width;
+			  xVel = (moveSpeed+5) * -1;
 			}
 		      yTemp = -7;
 		      inAir = true;
@@ -175,37 +175,37 @@ void Player::Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets
 		}
 	      else if(xVel > 0)
 		{
-		  x = Platforms[i]->x - Width - xVel;
+		  x = Platforms[i]->x - width - xVel;
 		  if(enemy != 0)
 		    {
-		      if(!NoHurt)
+		      if(!noHurt)
 			{ 
-			  Health -= 1;
-			  Mix_PlayChannel(-1, Player_Hurt, 0);
+			  health -= 1;
+			  Mix_PlayChannel(-1, playerHurt, 0);
 			}
-		      NoHurt = true;
-		      xVel = (MoveSpeed+5)*-1;
+		      noHurt = true;
+		      xVel = (moveSpeed+5)*-1;
 		      yTemp = -7;
 		      inAir = true;
 		    }
 		}
 	      else
 		{
-		  x = Platforms[i]->x + Platforms[i]->Width - xVel;
+		  x = Platforms[i]->x + Platforms[i]->width - xVel;
 		  if(enemy != 0)
 		    { 
-		      if(!NoHurt)
+		      if(!noHurt)
 			{ 
-			  Health -= 1;
-			  Mix_PlayChannel(-1, Player_Hurt, 0);
+			  health -= 1;
+			  Mix_PlayChannel(-1, playerHurt, 0);
 			}
-		      NoHurt = true;
-		      xVel = (MoveSpeed+5);
+		      noHurt = true;
+		      xVel = (moveSpeed+5);
 		      yTemp = -7;
 		      inAir = true;
 		    }
 		}
-	      if(Platforms[i]->Picture == "bild/Blocks/flyblockup.jpg")
+	      if(Platforms[i]->picture == "Images/Blocks/flyblockup.jpg")
 		{
 		  yTemp -= 2;
 		  yVel -= 2;
@@ -218,16 +218,16 @@ void Player::Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets
 	  xVel = 0;	  
 
 	  //Collision Y-axis.
-	  if(Collision(Platforms[i]))
+	  if(collision(Platforms[i]))
 	    {
 	      if(yVel > 0 && enemy != 0)
 		{
 		  if(enemy != 0)
 		    { 
 		      yVel = yVel *-1;
-		      enemy->Health -= 1;
-		      Mix_PlayChannel(-1, Player_Jumps_Enemy, 0);
-		      if(enemy->Health == 0)
+		      enemy->health -= 1;
+		      Mix_PlayChannel(-1, playerJumpsEnemy, 0);
+		      if(enemy->health == 0)
 			{
 			  if(Platforms.at(i) != NULL)
 			    {
@@ -235,30 +235,30 @@ void Player::Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets
 			      Platforms.at(i) = NULL;
 			      Platforms.erase(Platforms.begin()+i);
 			    }
-			  Mix_PlayChannel(-1, Enemy_Dies, 0);
+			  Mix_PlayChannel(-1, enemyDies, 0);
 			  continue;
 			}
 		    }
 		}	      
-	      else if(yVel > 0 && Platforms[i]->Picture == "bild/Blocks/redblock.png")
+	      else if(yVel > 0 && Platforms[i]->picture == "Images/Blocks/redblock.png")
 		{
 		  yVel = yVel*-1.5;
 		}	      
 	      else if(yVel > 0)
 		{
-		  if(IsMovingPlatform)
+		  if(isMovingPlatform)
 		    {
 		      if(mp != 0)
-			x += mp->MoveSpeed;
-		    }		  
+			x += mp->moveSpeed;
+		    }
 		  yVel = 0;
-		  y = Platforms[i]->y - Height;
+		  y = Platforms[i]->y - height;
 		  inAir = false;		  
 		}
 	      else
 		{		  
 		  yVel = 0;
-		  y = Platforms[i]->y + Platforms[i]->Height;  	  
+		  y = Platforms[i]->y + Platforms[i]->height;  	  
 		}
 	    }                        
 	  xVel = xTemp;
@@ -269,9 +269,9 @@ void Player::Move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets
   y += yVel;          
 }
 
-void Player::Friction()
+void Player::friction()
 {
-  if(!RightKey && !LeftKey)
+  if(!rightKey && !leftKey)
     {
       if(xVel < 1 && xVel > -1)
 	{
@@ -288,133 +288,132 @@ void Player::Friction()
     } 
 }
 
-void Player::SetCamera(int screen_width, int screen_height, int& bgX, int& bgY, SDL_Surface*& background)
+void Player::setCamera(int screenWidth, int screenHeight, int& bgX, int& bgY, SDL_Surface*& background)
 {
   //X-axis.
-  if((x + CameraX) > (screen_width - 400))
+  if((x + cameraX) > (screenWidth - 400))
     {
-      CameraX += ( (x+CameraX)  - (screen_width - 400) ) * -1;
-      bgX = int(CameraX + 0.5) % background->w; 
+      cameraX += ( (x+cameraX)  - (screenWidth - 400) ) * -1;
+      bgX = int(cameraX + 0.5) % background->w; 
       if(bgX <= -background->w)
 	{
 	  bgX = 0;
 	}
     }
-  else if((x + CameraX) < 400)
+  else if((x + cameraX) < 400)
     {
-      CameraX += 400 - (x + CameraX);
-      bgX = int(CameraX + 0.5) % background->w ;
+      cameraX += 400 - (x + cameraX);
+      bgX = int(cameraX + 0.5) % background->w ;
       if(bgX >= background->w)
 	{
 	  bgX = 0; 
 	}
     }
   //Y-axis.
-  if((y + CameraY) > (screen_height - 275))
+  if((y + cameraY) > (screenHeight - 275))
     {
-      CameraY += ( (y + CameraY)  - (screen_height - 275) ) * -1;
+      cameraY += ( (y + cameraY)  - (screenHeight - 275) ) * -1;
     }
-  else if((y + CameraY) < 150)
+  else if((y + cameraY) < 150)
     {
-      CameraY += 150 - (y + CameraY);
+      cameraY += 150 - (y + cameraY);
     }
 }
 
-void Player::Handle_Player(int screen_width, int screen_height, int& bgX, int& bgY, SDL_Surface*& background)
+void Player::handlePlayer(int screenWidth, int screenHeight, int& bgX, int& bgY, SDL_Surface*& background)
 {    
-  Gravity();
-  Friction();
-  SetCamera(screen_width, screen_height, bgX, bgY, background);      
-    if(LeftKey && !RightKey)
+  gravity();
+  friction();
+  setCamera(screenWidth, screenHeight, bgX, bgY, background);
+    if(leftKey && !rightKey)
       {
-	if(xVel > MoveSpeed*-1)	  
+	if(xVel > moveSpeed*-1)	  
 	  xVel --;	
 	
-	Animations = 2; 
+	animations = 2; 
 	
-	if(NoHurt)	  
-	  Animations = 4;  
-	
+	if(noHurt)	  
+	  animations = 4;	
       }
-    else if(RightKey && !LeftKey)
+    else if(rightKey && !leftKey)
       {
-	if(xVel < MoveSpeed)
+	if(xVel < moveSpeed)
 	  xVel++;
 
-	Animations = 1;  
+	animations = 1;  
  
-	if(NoHurt)
-	  Animations = 3;    
+	if(noHurt)
+	  animations = 3;    
       }
-    else if(LeftKey)
+    else if(leftKey)
       {
-	Animations = 2;
+	animations = 2;
 
-	if(NoHurt)
-	  Animations = 4;
+	if(noHurt)
+	  animations = 4;
       }
-    else if(RightKey)
+    else if(rightKey)
       {
-	Animations = 1;
+	animations = 1;
 
-	if(NoHurt)
-	  Animations = 3;
+	if(noHurt)
+	  animations = 3;
       }
     else
       {
-	if(PrevRight)
+	if(prevRight)
 	  {
-	    Animations = 0; 
+	    animations = 0; 
       
-	    if(NoHurt)
-	      Animations = 5;
+	    if(noHurt)
+	      animations = 5;
 	  }  
-	else if(PrevLeft)
+	else if(prevLeft)
 	  {
-	    Animations = 7; 
+	    animations = 7; 
       
-	    if(NoHurt)
-	      Animations = 6;	  
+	    if(noHurt)
+	      animations = 6;	  
 	  }
       }
   }
 
-int Player::Shooting()
+int Player::shooting()
 {
   int direction;
-  if(PrevRight)
+  if(prevRight)
     {
       direction = 10;
       return direction;
     }
-  if(PrevLeft)
+  if(prevLeft)
     {
       direction = -10;
       return direction;
     }
 }
 
-void Player::DisplayHealth(SDL_Surface* screen)
+void Player::displayHealth(SDL_Surface* screen)
 {
   //Falling down.
   if(y > 1500)
-    Health = 0;
+    health = 0;
 
-  int Health_ = int(Health);
+  int health_ = int(health);
   SDL_Rect offset;
 
   offset.x = 5;
   offset.y = 5;  
  
   //Print.
-  for(int i = 0; i < Health_; i++)
+  for(int i = 0; i < health_; i++)
     {
-      SDL_BlitSurface(HeartPic, NULL, screen, &offset);
+      SDL_BlitSurface(heartPic, NULL, screen, &offset);
       offset.x += 40;
     }
 }
 
-void Player::DisplayAmmo(SDL_Surface* screen)
+void Player::displayAmmo(SDL_Surface* screen)
 {
   SDL_Rect offset;
 
@@ -422,9 +421,9 @@ void Player::DisplayAmmo(SDL_Surface* screen)
   offset.y = 5;
   
   //Print.
-  for(int i = 0; i < Ammo; i++)
+  for(int i = 0; i < ammo; i++)
     {
-      SDL_BlitSurface(BulletPic, NULL, screen, &offset);
+      SDL_BlitSurface(bulletPic, NULL, screen, &offset);
       offset.x -= 15;
     }
 }

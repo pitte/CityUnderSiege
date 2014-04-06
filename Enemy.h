@@ -1,17 +1,16 @@
 #ifndef ENEMY_H
 #define ENEMY_H
-#include "MovingObject.h"
+#include "Moving_Object.h"
 
-
-class Enemy : public MovingObject
+class Enemy : public Moving_Object
 {
  public:
- Enemy(float x_, float y_, float Width_, float Height_, float MoveSpeed_, std::string Picture_, float Health_, float To_, 
-       int Frames_ = 0, int Animations_ = 0)
-   : MovingObject(x_, y_, Width_, Height_, MoveSpeed_, Picture_, Health_, Frames_, Animations_), To(To_) {}
+ Enemy(float x_, float y_, float width_, float height_, float moveSpeed_, std::string picture_, float health_, float to_, 
+       int frames_ = 0, int animations_ = 0)
+   : Moving_Object(x_, y_, width_, height_, moveSpeed_, picture_, health_, frames_, animations_), to(to_) {}
   
-  void EnemyMove(std::vector<Object*> Platforms);
-  float To;
+  void enemyMove(std::vector<Object*> Platforms);
+  float to;
 };
 
 #endif
