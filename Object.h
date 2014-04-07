@@ -19,7 +19,6 @@ class Object
     setClips();
     img = IMG_Load(picture_.c_str());
     currentFrame = 0;
-    animations = 0;
   }
   //Virtual destructor in order to be polymorph.
   virtual ~Object();
