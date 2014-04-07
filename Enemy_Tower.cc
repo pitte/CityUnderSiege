@@ -14,7 +14,7 @@ void Enemy_Tower::aiTower()
 void Enemy_Tower::towerShoot(float targetX, float targetY, float& xVel, 
 			      float& yVel)
 {
-  float adjacent, opposite, hyp;
+  float adjacent, opposite;
   float arctan;
 
   adjacent = targetX - x; //Adjacent side.
