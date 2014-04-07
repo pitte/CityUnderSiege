@@ -64,7 +64,7 @@ void Player::move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets
   bool isMovingPlatform = false;
   bool disappear = false;
   
-  for(int b = 0; b < Bullets.size(); b++)
+  for(unsigned int b = 0; b < Bullets.size(); b++)
     {
       bulletObject = dynamic_cast<Object*>(Bullets[b]);
       if(collision(Bullets[b]) && bulletObject->picture == "Images/laser.png")
@@ -84,7 +84,7 @@ void Player::move(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets
 	}
     }
 
-  for (int i = 0; i < Platforms.size(); ++i)
+  for (unsigned int i = 0; i < Platforms.size(); ++i)
     { 
       mp = dynamic_cast<Moving_Platform*>(Platforms[i]);
       enemy = dynamic_cast<Enemy*>(Platforms[i]);

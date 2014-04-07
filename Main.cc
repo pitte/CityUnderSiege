@@ -184,7 +184,7 @@ int main(int argc, char* args[])
 	  //Handle movement of all bullets.
 	  if(Bullets.size() != 0) 
 	    {
-	      for(int i = 0; i < Bullets.size(); i++)
+	      for(unsigned int i = 0; i < Bullets.size(); i++)
 		{
 		  bulletLoop = dynamic_cast<Moving_Object*>(Bullets[i]);
 		  bulletLoop->bulletMovement();
@@ -198,7 +198,7 @@ int main(int argc, char* args[])
 	    }
 	  
 	  //Handle AI for all enemies and platforms.
-	  for(int i = 0; i < Platforms.size(); ++i) 
+	  for(unsigned int i = 0; i < Platforms.size(); ++i) 
 	    {
 	      mp = dynamic_cast<Moving_Platform*>(Platforms[i]);
 	      enemy = dynamic_cast<Enemy*>(Platforms[i]);
@@ -282,12 +282,12 @@ int main(int argc, char* args[])
 	      SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x79, 0xC9, 0xFA ) );	 
 	    }
 	  handleBackground(bgX, bgY, background, screen, player.cameraY);
-	  for(int i = 0; i < Bullets.size(); i++)
+	  for(unsigned int i = 0; i < Bullets.size(); i++)
 	    {
 	      Bullets[i]->show(screen, player.cameraX, player.cameraY);
 	    }
 	  player.show(screen, player.cameraX, player.cameraY);      
-	  for (int i = 0; i < Platforms.size(); i++)
+	  for (unsigned int i = 0; i < Platforms.size(); i++)
 	    {
 	      Platforms[i]->show(screen, player.cameraX, player.cameraY);
 	    }      	  
@@ -416,11 +416,11 @@ void towerShoot(float startX, float startY, float targetX, float targetY, float&
 void bulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, int playerX, int screenWidth, int screenHeight)
 {
   //Check all bullets.
-  for(int b = 0; b < Bullets.size(); b++)
+  for(unsigned int b = 0; b < Bullets.size(); b++)
     {
       Moving_Object* bullet = dynamic_cast<Moving_Object*>(Bullets[b]);
       //Check collision with all objects except bullets.
-      for(int p = 0; p < Platforms.size(); p++) 
+      for(unsigned int p = 0; p < Platforms.size(); p++) 
 	{
 	  Enemy* enemy;
 	  Enemy_Tower* enemyTower;
