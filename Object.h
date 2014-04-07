@@ -21,7 +21,7 @@ class Object
     currentFrame = 0;
     animations = 0;
   }
-  //Virtual in order to be polymorph.
+  //Virtual destructor in order to be polymorph.
   virtual ~Object();
 
   void show(SDL_Surface* screen, float cameraX, float cameraY);

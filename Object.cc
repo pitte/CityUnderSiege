@@ -22,8 +22,6 @@ void Object::show(SDL_Surface* screen, float cameraX, float cameraY)
   applySurface(x + cameraX, y + cameraY, screen, &clips[currentFrame]);
 }
 
-
-
 void Object::applySurface(float x, float y, SDL_Surface* screen, SDL_Rect *clip = NULL)
 {
   SDL_Rect offset;
@@ -35,7 +33,6 @@ void Object::applySurface(float x, float y, SDL_Surface* screen, SDL_Rect *clip 
   
   SDL_BlitSurface(img, clip, screen, &offset);
 }
-
 
 SDL_Surface *Object::loadImage(std::string filename)
 {

@@ -25,6 +25,7 @@
 #include "Menu.cc"
 #include "loadLevel.cc"
 #include "loadSound.cc"
+#include "fillVectors.cc"
 
 const int screenWidth = 1024;
 const int screenHeight = 768;
@@ -40,150 +41,11 @@ Mix_Chunk* playerJumpsEnemy = NULL;
 Mix_Chunk* enemyDies = NULL;
 Mix_Chunk* gameOver = NULL;
 
-void handleBackground( int x, int y, SDL_Surface* source, SDL_Surface* destination, float cameraY )
-{
-  SDL_Rect offset;
-  //Current background.
-  offset.x = x;
-  offset.y = y + int(cameraY + 0.5 - 143);
-  SDL_BlitSurface( source, NULL, destination, &offset );
-  //Next background.
-  offset.x = x + source->w;
-  offset.y = y + int(cameraY + 0.5 - 143);
-  SDL_BlitSurface( source, NULL, destination, &offset );
-  //Previous background.
-  offset.x = x - source->w;
-  offset.y = y + int(cameraY + 0.5 - 143);
-  SDL_BlitSurface( source, NULL, destination, &offset );
-  //Next next background due to thin background.
-  offset.x = x + 2*source->w;
-  offset.y = y + int(cameraY + 0.5 - 143);
-  SDL_BlitSurface( source, NULL, destination, &offset );
-}
-
-SDL_Surface *loadImage(std::string filename)
-{
-  SDL_Surface* loadedImage = NULL;
-  SDL_Surface* optimizedImage = NULL;
-  loadedImage = IMG_Load(filename.c_str());
-
-  if(loadedImage != NULL)
-    {
-      optimizedImage = SDL_DisplayFormat(loadedImage);
-      SDL_FreeSurface(loadedImage);
-    }
-  return optimizedImage;
-}
-
-bool init()
-{
-  if( SDL_Init( SDL_INIT_EVERYTHING ) == -1 )
-    {
-      return false;
-    }
-  if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
-    {
-      return false;
-    }
-  screen = SDL_SetVideoMode( screenWidth, screenHeight, screenBpp, SDL_SWSURFACE );
-  if( screen == NULL )
-    {
-      return false;
-    }
-  SDL_WM_SetCaption( "City Under Siege", NULL );
-
-  return true;
-}
-
-void towerShoot(float startX, float startY, float targetX, float targetY, float& xVel, float& yVel)
-{
-  float adjacent, opposite, hyp;
-  float arctan;
-  adjacent = targetX - startX; //Adjacent side.
-  opposite = targetY - startY; //Opposite side.
-  arctan = atan(adjacent/opposite); //Degrees.
-  xVel = sin(arctan);
-  yVel = cos(arctan);
-  
-  if(adjacent > 0 && opposite > 0)
-    {
-      xVel = sin(arctan)*3;
-      yVel = cos(arctan)*3;
-    }
-  else if(adjacent > 0 && opposite < 0)
-    {
-      xVel = (-sin(arctan))*3;
-      yVel = (-cos(arctan))*3;
-    }
-  else if(adjacent < 0 && opposite > 0)
-    {
-      xVel = sin(arctan)*3;
-      yVel = cos(arctan)*3;
-    }
-  else if(adjacent < 0 && opposite < 0)
-    {
-      xVel = (-sin(arctan))*3;
-      yVel = (-cos(arctan))*3;
-    }
-}
-
-void bulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, int playerX, int screenWidth, int screenHeight)
-{
-  //Check all bullets.
-  for(int b = 0; b < Bullets.size(); b++)
-    {
-      Moving_Object* bullet = dynamic_cast<Moving_Object*>(Bullets[b]);
-      //Check collision with all objects except bullets.
-      for(int p = 0; p < Platforms.size(); p++) 
-	{
-	  Enemy* enemy;
-	  Enemy_Tower* enemyTower;
-	  
-	  if(bullet->collision(Platforms[p]))
-	    {
-	      enemy = dynamic_cast<Enemy*>(Platforms[p]);
-	      enemyTower = dynamic_cast<Enemy_Tower*>(Platforms[p]);
-	      
-	      if(bullet->collision(Platforms[p]) && enemyTower == 0)
-		{
-		  //Remove bullet.
-		  if( Bullets.at(b) != NULL ) 
-		    {
-		      delete Bullets.at(b);
-		      Bullets.at(b) = NULL;
-		      Bullets.erase(Bullets.begin()+b);
-		    }
-		  //Enemy hit but not dead.
-		  if(enemy != 0 && enemy->health != 0) 
-		    {
-		      enemy->health -= 1;
-		    }
-		  //Killed enemy.
-		  else if(enemy != 0 && enemy->health == 0) 
-		    {
-		      //Remove enemy so that it is not blitted on screen.
-		      if( Platforms.at(p) != NULL ) 
-			{
-			  delete Platforms.at(p);
-			  Platforms.at(p) = NULL;
-			  Platforms.erase(Platforms.begin()+p);
-			}
-		    }
-		}
-	      //If shot outside screen +/- 774, remove it.
-	      else if(bullet->x > (playerX + 774) || bullet->x < (playerX - 774))
-		{
-		  if( Bullets.at(b) != NULL ) 
-		    {
-		      delete Bullets.at(b);
-		      Bullets.at(b) = NULL;
-		      Bullets.erase(Bullets.begin()+b);
-		    }
-		}
-	    }
-	}
-    }
-}
+void bulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, int playerX, int screenWidth, int screenHeight);
+void towerShoot(float startX, float startY, float targetX, float targetY, float& xVel, float& yVel);
+bool init();
+SDL_Surface *loadImage(std::string filename);
+void handleBackground( int x, int y, SDL_Surface* source, SDL_Surface* destination, float cameraY );
 
 int main(int argc, char* args[])
 {
@@ -200,30 +62,15 @@ int main(int argc, char* args[])
   std::string level;
   int noHurtCounter = 0;
   std::vector<Object*> startMenuV;
-  startMenuV.push_back(new Object(95, 0, 180, 800, "Images/New_Game.jpg")); //0
-  startMenuV.push_back(new Object(120, 0, 180, 800, "Images/New_Game_Markerad.jpg")); 
-  startMenuV.push_back(new Object(95, 220, 180, 800, "Images/Select_Level.jpg")); //4
-  startMenuV.push_back(new Object(115, 220, 180, 800, "Images/Select_Level_Markerad.jpg"));
-  startMenuV.push_back(new Object(95, 440, 180, 800, "Images/Exit_Game.jpg")); //6
-  startMenuV.push_back(new Object(120, 440, 180, 800, "Images/Exit_Game_Markerad.jpg"));
   std::vector<Object*> pausMenuV;  
-  pausMenuV.push_back(new Object(100, 0, 180, 800, "Images/Resume_Game.jpg") );
-  pausMenuV.push_back(new Object(120, 0, 180, 800, "Images/Resume_Game_Markerad.jpg") );
-  pausMenuV.push_back(new Object(100, 180, 180, 800, "Images/Exit_Game.jpg") );
-  pausMenuV.push_back(new Object(120, 180, 180, 800, "Images/Exit_Game_Markerad.jpg") );
   std::vector<Object*> gameOverV;
-  gameOverV.push_back(new Object(5, 200, 180, 1300, "Images/Restart.png") );
-  gameOverV.push_back(new Object(50, 200, 180, 1300, "Images/Restart_Markerad.png") );
-  gameOverV.push_back(new Object(5, 380, 180, 800, "Images/Main_Menu.png") );
-  gameOverV.push_back(new Object(50, 380, 180, 800, "Images/Main_Menu_markerad.png") );
-  gameOverV.push_back(new Object(0, 0, screenHeight, screenWidth, "Images/Game_Over.jpg") );
   std::vector<Object*> selectLevelV;
-  selectLevelV.push_back(new Object(5, 200, 180, 1300, "Images/Level1.png") );
-  selectLevelV.push_back(new Object(25, 200, 180, 1300, "Images/Level1_markerad.png") );
-  selectLevelV.push_back(new Object(5, 350, 180, 800, "Images/Level2.png") );
-  selectLevelV.push_back(new Object(25, 350, 180, 800, "Images/Level2_markerad.png") );
-  selectLevelV.push_back(new Object(5, 500, 180, 800, "Images/Back.png") );
-  selectLevelV.push_back(new Object(25, 500, 180, 800, "Images/Back_markerad.png") );
+  
+  if( fillVectors(startMenuV, pausMenuV, gameOverV, selectLevelV, screenHeight, screenWidth) == 1 )
+    {
+      return 1;
+    }
+
   Player player(4700, 650, 40, 79, 8, "Images/PlayerAnimations.png", 5, 3, 7);
   player.width = 35;
   Timer fps;
@@ -320,7 +167,7 @@ int main(int argc, char* args[])
 		  return 1;
 		}
 	    }
-	  //Player shoots. If he has ammo spawn bullet.
+	  //Player shoots. If he has ammo -> spawn bullet.
 	  if(player.shoot && player.ammo != 0) 
 	    {
 	      int speed = player.shooting();
@@ -480,4 +327,149 @@ int main(int argc, char* args[])
 
   SDL_Quit();
   return 0;
+}
+
+void handleBackground( int x, int y, SDL_Surface* source, SDL_Surface* destination, float cameraY )
+{
+  SDL_Rect offset;
+  //Current background.
+  offset.x = x;
+  offset.y = y + int(cameraY + 0.5 - 143);
+  SDL_BlitSurface( source, NULL, destination, &offset );
+  //Next background.
+  offset.x = x + source->w;
+  offset.y = y + int(cameraY + 0.5 - 143);
+  SDL_BlitSurface( source, NULL, destination, &offset );
+  //Previous background.
+  offset.x = x - source->w;
+  offset.y = y + int(cameraY + 0.5 - 143);
+  SDL_BlitSurface( source, NULL, destination, &offset );
+  //Next next background due to thin background.
+  offset.x = x + 2*source->w;
+  offset.y = y + int(cameraY + 0.5 - 143);
+  SDL_BlitSurface( source, NULL, destination, &offset );
+}
+
+SDL_Surface *loadImage(std::string filename)
+{
+  SDL_Surface* loadedImage = NULL;
+  SDL_Surface* optimizedImage = NULL;
+  loadedImage = IMG_Load(filename.c_str());
+
+  if(loadedImage != NULL)
+    {
+      optimizedImage = SDL_DisplayFormat(loadedImage);
+      SDL_FreeSurface(loadedImage);
+    }
+  return optimizedImage;
+}
+
+bool init()
+{
+  if( SDL_Init( SDL_INIT_EVERYTHING ) == -1 )
+    {
+      return false;
+    }
+  if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+    {
+      return false;
+    }
+  screen = SDL_SetVideoMode( screenWidth, screenHeight, screenBpp, SDL_SWSURFACE );
+  if( screen == NULL )
+    {
+      return false;
+    }
+  SDL_WM_SetCaption( "City Under Siege", NULL );
+
+  return true;
+}
+
+void towerShoot(float startX, float startY, float targetX, float targetY, float& xVel, float& yVel)
+{
+  float adjacent, opposite, hyp;
+  float arctan;
+  adjacent = targetX - startX; //Adjacent side.
+  opposite = targetY - startY; //Opposite side.
+  arctan = atan(adjacent/opposite); //Degrees.
+  xVel = sin(arctan);
+  yVel = cos(arctan);
+  
+  if(adjacent > 0 && opposite > 0)
+    {
+      xVel = sin(arctan)*3;
+      yVel = cos(arctan)*3;
+    }
+  else if(adjacent > 0 && opposite < 0)
+    {
+      xVel = (-sin(arctan))*3;
+      yVel = (-cos(arctan))*3;
+    }
+  else if(adjacent < 0 && opposite > 0)
+    {
+      xVel = sin(arctan)*3;
+      yVel = cos(arctan)*3;
+    }
+  else if(adjacent < 0 && opposite < 0)
+    {
+      xVel = (-sin(arctan))*3;
+      yVel = (-cos(arctan))*3;
+    }
+}
+
+void bulletHit(std::vector<Object*>& Platforms, std::vector<Object*>& Bullets, int playerX, int screenWidth, int screenHeight)
+{
+  //Check all bullets.
+  for(int b = 0; b < Bullets.size(); b++)
+    {
+      Moving_Object* bullet = dynamic_cast<Moving_Object*>(Bullets[b]);
+      //Check collision with all objects except bullets.
+      for(int p = 0; p < Platforms.size(); p++) 
+	{
+	  Enemy* enemy;
+	  Enemy_Tower* enemyTower;
+	  
+	  if(bullet->collision(Platforms[p]))
+	    {
+	      enemy = dynamic_cast<Enemy*>(Platforms[p]);
+	      enemyTower = dynamic_cast<Enemy_Tower*>(Platforms[p]);
+	      
+	      if(bullet->collision(Platforms[p]) && enemyTower == 0)
+		{
+		  //Remove bullet.
+		  if( Bullets.at(b) != NULL ) 
+		    {
+		      delete Bullets.at(b);
+		      Bullets.at(b) = NULL;
+		      Bullets.erase(Bullets.begin()+b);
+		    }
+		  //Enemy hit but not dead.
+		  if(enemy != 0 && enemy->health != 0) 
+		    {
+		      enemy->health -= 1;
+		    }
+		  //Killed enemy.
+		  else if(enemy != 0 && enemy->health == 0) 
+		    {
+		      //Remove enemy so that it is not blitted on screen.
+		      if( Platforms.at(p) != NULL ) 
+			{
+			  delete Platforms.at(p);
+			  Platforms.at(p) = NULL;
+			  Platforms.erase(Platforms.begin()+p);
+			}
+		    }
+		}
+	      //If shot outside screen +/- 774, remove it.
+	      else if(bullet->x > (playerX + 774) || bullet->x < (playerX - 774))
+		{
+		  if( Bullets.at(b) != NULL ) 
+		    {
+		      delete Bullets.at(b);
+		      Bullets.at(b) = NULL;
+		      Bullets.erase(Bullets.begin()+b);
+		    }
+		}
+	    }
+	}
+    }
 }
