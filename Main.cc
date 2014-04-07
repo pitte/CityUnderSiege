@@ -66,10 +66,7 @@ int main(int argc, char* args[])
   std::vector<Object*> gameOverV;
   std::vector<Object*> selectLevelV;
   
-  if( fillVectors(startMenuV, pausMenuV, gameOverV, selectLevelV, screenHeight, screenWidth) == 1 )
-    {
-      return 1;
-    }
+  fillVectors(startMenuV, pausMenuV, gameOverV, selectLevelV, screenHeight, screenWidth);
 
   Player player(4700, 650, 40, 79, 8, "Images/PlayerAnimations.png", 5, 3, 7);
   player.width = 35;

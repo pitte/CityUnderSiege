@@ -1,4 +1,4 @@
-int fillVectors(std::vector<Object*>& startMenuV, std::vector<Object*>& pausMenuV, std::vector<Object*>& gameOverV, std::vector<Object*>& selectLevelV, const int& screenHeight, const int& screenWidth)
+void fillVectors(std::vector<Object*>& startMenuV, std::vector<Object*>& pausMenuV, std::vector<Object*>& gameOverV, std::vector<Object*>& selectLevelV, const int& screenHeight, const int& screenWidth)
 {
   startMenuV.push_back(new Object(95, 0, 180, 800, "Images/New_Game.jpg")); //0
   startMenuV.push_back(new Object(120, 0, 180, 800, "Images/New_Game_Markerad.jpg")); 
